@@ -1,6 +1,6 @@
 import fastify, { type FastifyReply, type FastifyRequest } from "fastify";
 import cors from "@fastify/cors";
-import { HOSTNAME, PORT } from "./env";
+import { HOSTNAME, PORT, validateRequiredEnvVars } from "./env";
 
 const app = fastify({ logger: true });
 
@@ -16,6 +16,7 @@ app.get("/health-check", (_request: FastifyRequest, reply: FastifyReply) =>
 
 const start = async () => {
   try {
+    validateRequiredEnvVars();
     await app.listen({ host: HOSTNAME, port: PORT });
     console.log(`Server is running on http://${HOSTNAME}:${PORT}`);
   } catch (err) {
