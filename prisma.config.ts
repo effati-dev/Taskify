@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 import { DATABASE_URL } from "./src/env";
 
