@@ -19,6 +19,10 @@ export const registerUser = async (dto: RegisterUserRequest) => {
   });
 };
 
+export const getAllUsers = async () => {
+  return prisma.user.findMany();
+};
+
 export const getUserById = async (id: string) => {
   return prisma.user.findUnique({
     where: {

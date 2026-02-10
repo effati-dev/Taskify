@@ -7,4 +7,7 @@ export const getUserResponseSchema = z.object({
   name: userCore.name,
 });
 
+export const getManyUserResponseSchema = z.array(getUserResponseSchema);
+
 export type GetUserResponse = z.infer<typeof getUserResponseSchema>;
+export type GetManyUserResponse = z.infer<typeof getManyUserResponseSchema>;

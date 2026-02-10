@@ -19,6 +19,8 @@ app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
 app.setErrorHandler(errorHandler);
 
+app.register(import("./modules/users/user.route"), { prefix: "/users" });
+
 app.get("/health-check", (_request: FastifyRequest, reply: FastifyReply) =>
   reply.status(200).send({ message: "Ok" }),
 );

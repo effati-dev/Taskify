@@ -12,5 +12,7 @@ export default (
     name: err.name || "Internal Server Error",
     code: err.code || "INTERNAL_SERVER_ERROR",
   };
-  return reply.status(statusCode).send(response);
+  return reply
+    .status(statusCode)
+    .send({ code: response.code, message: response.message });
 };
