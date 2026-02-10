@@ -13,5 +13,6 @@ const validateRequiredEnvVars = () => {
 export const HOSTNAME = process.env.HOSTNAME || "localhost";
 export const PORT = parseInt(process.env.PORT || "8000");
 export const DATABASE_URL = process.env.DATABASE_URL || "";
+export const HASH_SALT_ROUNDS = parseInt(process.env.PASS_SALT_ROUNDS || "10");
 
 export { validateRequiredEnvVars };
