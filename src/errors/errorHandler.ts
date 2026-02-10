@@ -13,7 +13,10 @@ export default (
   const response = baseErrorMapper(err);
 
   if (response.statusCode === 500) {
-    console.error(err);
+    console.error({
+      err,
+      code: response.code,
+    });
   }
   return reply
     .status(response.statusCode || 500)

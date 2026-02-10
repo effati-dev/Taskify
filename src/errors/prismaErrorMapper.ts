@@ -1,7 +1,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
-import type { FastifyError } from "fastify";
 import errorCodes from "./errorCodes";
-export default (err: PrismaClientKnownRequestError): FastifyError => {
+import type { ResponseError } from "./ResponseError";
+export default (err: PrismaClientKnownRequestError): ResponseError => {
   switch (err.code) {
     case "P2002": {
       const fields = (err.meta as any)?.driverAdapterError?.cause?.constraint

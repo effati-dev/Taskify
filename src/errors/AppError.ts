@@ -1,7 +1,8 @@
 import type { FastifyError } from "fastify";
 import type { ErrorCode } from "./errorCodes";
+import type { ResponseError } from "./ResponseError";
 
-export class AppError extends Error implements FastifyError {
+export class AppError extends Error implements ResponseError {
   statusCode: number;
   code: ErrorCode;
   name: string;
