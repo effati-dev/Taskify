@@ -9,76 +9,66 @@ import type {
   UpdateUserRequest,
 } from "./schemas/request";
 
-export const registerUser = async (dto: RegisterUserRequest) => {
-  const { password, ...rest } = dto;
-  return prisma.user.create({
-    data: {
-      ...rest,
-      passwordHash: await hashPassword(password),
-    },
-  });
-};
+export default {
+  registerUser: async (input: RegisterUserRequest) => {
+    const { password, ...rest } = input;
+    return prisma.user.create({
+      data: {
+        ...rest,
+        passwordHash: await hashPassword(password),
+      },
+    });
+  },
 
-export const getAllUsers = async () => {
-  return prisma.user.findMany();
-};
+  getAllUsers: async () => {
+    return prisma.user.findMany();
+  },
 
-export const getUserById = async (params: GetUserRequest) => {
-  return prisma.user.findUnique({
-    where: {
-      id: params.userId,
-    },
-  });
-};
+  getUserById: async (params: GetUserRequest) => {
+    return prisma.user.findUniqueOrThrow({
+      where: {
+        id: params.userId,
+      },
+    });
+  },
 
-export const updateUser = async (
-  params: GetUserRequest,
-  input: UpdateUserRequest,
-) => {
-  return prisma.user.update({
-    where: {
-      id: params.userId,
-    },
-    data: omitUndefined(input),
-  });
-};
+  updateUser: async (params: GetUserRequest, input: UpdateUserRequest) => {
+    return prisma.user.update({
+      where: {
+        id: params.userId,
+      },
+      data: omitUndefined(input),
+    });
+  },
 
-export const changePassword = async (
-  params: GetUserRequest,
-  input: ChangePasswordRequest,
-) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      id: params.userId,
-    },
-  });
-
-  if (!user) {
-    throw new AppError(
-      404,
-      errorCodes.PRISMA_RECORD_NOT_FOUND,
-      "Not Found",
-      "User not found",
+  changePassword: async (
+    params: GetUserRequest,
+    input: ChangePasswordRequest,
+  ) => {
+    const user = await prisma.user.findUniqueOrThrow({
+      where: {
+        id: params.userId,
+      },
+    });
+    const isPasswordValid = await comparePassword(
+      input.oldPassword,
+      user.passwordHash,
     );
-  }
-  const isPasswordValid = await comparePassword(
-    input.oldPassword,
-    user.passwordHash,
-  );
-  if (!isPasswordValid) {
-    throw new AppError(
-      400,
-      errorCodes.INVALID_CREDENTIALS,
-      "Invalid Credentials",
-      "Old password is incorrect",
-    );
-  }
-  return prisma.user.update({
-    where: {
-      id: params.userId,
-    },
-    data: {
-      passwordHash: await hashPassword(input.newPassword),
-    },
-  });
+    if (!isPasswordValid) {
+      throw new AppError(
+        400,
+        errorCodes.INVALID_CREDENTIALS,
+        "Invalid Credentials",
+        "Old password is incorrect",
+      );
+    }
+    return prisma.user.update({
+      where: {
+        id: params.userId,
+      },
+      data: {
+        passwordHash: await hashPassword(input.newPassword),
+      },
+    });
+  },
 };

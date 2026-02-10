@@ -1,69 +1,55 @@
 import type { FastifyInstance } from "fastify";
-import {
-  registerUserHandler,
-  getAllUsersHandler,
-  getUserByIdHandler,
-  updateUserHandler,
-  changePasswordHandler,
-} from "./user.controller";
-import {
-  changePasswordRequestSchema,
-  getUserRequestSchema,
-  registerUserRequestSchema,
-  updateUserRequestSchema,
-} from "./schemas/request";
-import {
-  getManyUserResponseSchema,
-  getUserResponseSchema,
-} from "./schemas/response";
+import userController from "./user.controller";
+import { userRequestSchemas } from "./schemas/request";
+import { userResponseSchemas } from "./schemas/response";
 
 export default (app: FastifyInstance) => {
   app.route({
     url: "/",
     method: "POST",
     schema: {
-      body: registerUserRequestSchema,
-      response: { 201: { getUserResponseSchema } },
+      body: userRequestSchemas.registerUser,
+      response: { 201: userResponseSchemas.getUser },
     },
-    handler: registerUserHandler,
+    handler: userController.registerUserHandler,
   });
 
   app.route({
     url: "/",
     method: "GET",
-    schema: { response: { 200: getManyUserResponseSchema } },
-    handler: getAllUsersHandler,
+    schema: { response: { 200: userResponseSchemas.getManyUsers } },
+    handler: userController.getAllUsersHandler,
   });
 
   app.route({
     url: "/:userId",
     method: "GET",
     schema: {
-      params: getUserRequestSchema,
-      response: { 200: getUserResponseSchema },
+      params: userRequestSchemas.getUser,
+      response: { 200: userResponseSchemas.getUser },
     },
-    handler: getUserByIdHandler,
+    handler: userController.getUserByIdHandler,
   });
 
   app.route({
     url: "/:userId",
     method: "PUT",
     schema: {
-      params: getUserRequestSchema,
-      body: updateUserRequestSchema,
-      response: { 200: getUserResponseSchema },
+      params: userRequestSchemas.getUser,
+      body: userRequestSchemas.updateUser,
+      response: { 200: userResponseSchemas.getUser },
     },
-    handler: updateUserHandler,
+    handler: userController.updateUserHandler,
   });
 
   app.route({
     url: "/:userId/change-password",
     method: "PUT",
     schema: {
-      params: getUserRequestSchema,
-      body: changePasswordRequestSchema,
-      response: { 200: getUserResponseSchema },
+      params: userRequestSchemas.getUser,
+      body: userRequestSchemas.changePassword,
+      response: { 200: userResponseSchemas.getUser },
     },
-    handler: changePasswordHandler,
+    handler: userController.changePasswordHandler,
   });
 };

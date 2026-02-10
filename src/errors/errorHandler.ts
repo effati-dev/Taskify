@@ -1,18 +1,21 @@
-import type { FastifyError, FastifyReply, FastifyRequest } from "fastify";
+import {
+  type FastifyError,
+  type FastifyReply,
+  type FastifyRequest,
+} from "fastify";
+import baseErrorMapper from "./baseErrorMapper";
 
 export default (
-  err: FastifyError,
+  err: unknown,
   _request: FastifyRequest,
   reply: FastifyReply,
 ) => {
-  const statusCode = err.statusCode || 500;
-  const response = {
-    error: err.name || "Internal Server Error",
-    message: err.message || "An unexpected error occurred",
-    name: err.name || "Internal Server Error",
-    code: err.code || "INTERNAL_SERVER_ERROR",
-  };
+  const response = baseErrorMapper(err);
+
+  if (response.statusCode === 500) {
+    console.error(err);
+  }
   return reply
-    .status(statusCode)
+    .status(response.statusCode || 500)
     .send({ code: response.code, message: response.message });
 };
