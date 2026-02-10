@@ -8,7 +8,7 @@ export const registerUserRequestSchema = z.object({
 });
 
 export const getUserRequestSchema = z.object({
-  id: userCore.id,
+  userId: userCore.id,
 });
 
 export const updateUserRequestSchema = z.object({

@@ -23,18 +23,10 @@ export const getAllUsers = async () => {
   return prisma.user.findMany();
 };
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (params: GetUserRequest) => {
   return prisma.user.findUnique({
     where: {
-      id,
-    },
-  });
-};
-
-export const getUserByEmail = async (email: string) => {
-  return prisma.user.findUnique({
-    where: {
-      email,
+      id: params.userId,
     },
   });
 };
@@ -45,7 +37,7 @@ export const updateUser = async (
 ) => {
   return prisma.user.update({
     where: {
-      id: params.id,
+      id: params.userId,
     },
     data: omitUndefined(input),
   });
@@ -57,7 +49,7 @@ export const changePassword = async (
 ) => {
   const user = await prisma.user.findUnique({
     where: {
-      id: params.id,
+      id: params.userId,
     },
   });
 
@@ -83,7 +75,7 @@ export const changePassword = async (
   }
   return prisma.user.update({
     where: {
-      id: params.id,
+      id: params.userId,
     },
     data: {
       passwordHash: await hashPassword(input.newPassword),

@@ -1,6 +1,17 @@
 import type { FastifyInstance } from "fastify";
-import { registerUserHandler, getAllUsersHandler } from "./user.controller";
-import { registerUserRequestSchema } from "./schemas/request";
+import {
+  registerUserHandler,
+  getAllUsersHandler,
+  getUserByIdHandler,
+  updateUserHandler,
+  changePasswordHandler,
+} from "./user.controller";
+import {
+  changePasswordRequestSchema,
+  getUserRequestSchema,
+  registerUserRequestSchema,
+  updateUserRequestSchema,
+} from "./schemas/request";
 import {
   getManyUserResponseSchema,
   getUserResponseSchema,
@@ -22,5 +33,37 @@ export default (app: FastifyInstance) => {
     method: "GET",
     schema: { response: { 200: getManyUserResponseSchema } },
     handler: getAllUsersHandler,
+  });
+
+  app.route({
+    url: "/:userId",
+    method: "GET",
+    schema: {
+      params: getUserRequestSchema,
+      response: { 200: getUserResponseSchema },
+    },
+    handler: getUserByIdHandler,
+  });
+
+  app.route({
+    url: "/:userId",
+    method: "PUT",
+    schema: {
+      params: getUserRequestSchema,
+      body: updateUserRequestSchema,
+      response: { 200: getUserResponseSchema },
+    },
+    handler: updateUserHandler,
+  });
+
+  app.route({
+    url: "/:userId/change-password",
+    method: "PUT",
+    schema: {
+      params: getUserRequestSchema,
+      body: changePasswordRequestSchema,
+      response: { 200: getUserResponseSchema },
+    },
+    handler: changePasswordHandler,
   });
 };
