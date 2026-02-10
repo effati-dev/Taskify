@@ -1,13 +1,14 @@
 import fastify, { type FastifyReply, type FastifyRequest } from "fastify";
 import cors from "@fastify/cors";
-import { HOSTNAME, PORT, validateRequiredEnvVars } from "./env";
+import { HOSTNAME, JWT_SECRET, PORT, validateRequiredEnvVars } from "./env";
 import errorHandler from "./errors/errorHandler";
 import {
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
+import fastifyJwt from "@fastify/jwt";
 
-const app = fastify({ logger: true });
+export const app = fastify({ logger: true });
 
 app.register(cors, {
   origin: "*",
@@ -15,9 +16,20 @@ app.register(cors, {
   credentials: true,
 });
 
+app.register(fastifyJwt, {
+  secret: JWT_SECRET,
+});
+
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
 app.setErrorHandler(errorHandler);
+
+app.decorate(
+  "authenticate",
+  async (request: FastifyRequest, reply: FastifyReply) => {
+    await request.jwtVerify();
+  },
+);
 
 app.register(import("./modules/users/user.route"), { prefix: "/users" });
 
