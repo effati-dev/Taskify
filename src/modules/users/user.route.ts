@@ -16,6 +16,7 @@ export default (app: FastifyInstance) => {
 
   app.route({
     url: "/",
+    onRequest: app.authenticate,
     method: "GET",
     schema: { response: { 200: userResponseSchemas.getManyUsers } },
     handler: userController.getAllUsersHandler,
@@ -24,6 +25,7 @@ export default (app: FastifyInstance) => {
   app.route({
     url: "/:userId",
     method: "GET",
+    onRequest: app.authenticate,
     schema: {
       params: userRequestSchemas.getUser,
       response: { 200: userResponseSchemas.getUser },
@@ -34,6 +36,7 @@ export default (app: FastifyInstance) => {
   app.route({
     url: "/:userId",
     method: "PUT",
+    onRequest: app.authenticate,
     schema: {
       params: userRequestSchemas.getUser,
       body: userRequestSchemas.updateUser,
@@ -45,6 +48,7 @@ export default (app: FastifyInstance) => {
   app.route({
     url: "/:userId/change-password",
     method: "PUT",
+    onRequest: app.authenticate,
     schema: {
       params: userRequestSchemas.getUser,
       body: userRequestSchemas.changePassword,
