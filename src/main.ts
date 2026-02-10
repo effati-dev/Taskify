@@ -2,6 +2,10 @@ import fastify, { type FastifyReply, type FastifyRequest } from "fastify";
 import cors from "@fastify/cors";
 import { HOSTNAME, PORT, validateRequiredEnvVars } from "./env";
 import errorHandler from "./errors/errorHandler";
+import {
+  serializerCompiler,
+  validatorCompiler,
+} from "fastify-type-provider-zod";
 
 const app = fastify({ logger: true });
 
@@ -11,6 +15,8 @@ app.register(cors, {
   credentials: true,
 });
 
+app.setSerializerCompiler(serializerCompiler);
+app.setValidatorCompiler(validatorCompiler);
 app.setErrorHandler(errorHandler);
 
 app.get("/health-check", (_request: FastifyRequest, reply: FastifyReply) =>
