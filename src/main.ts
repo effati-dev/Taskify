@@ -1,12 +1,14 @@
 import fastify, { type FastifyReply, type FastifyRequest } from "fastify";
 import cors from "@fastify/cors";
-import { HOSTNAME, JWT_SECRET, PORT, validateRequiredEnvVars } from "./env";
+import { validateRequiredEnvVars } from "./env";
+import env from "./env";
 import errorHandler from "./errors/errorHandler";
 import {
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import fastifyJwt from "@fastify/jwt";
+import fastifyCookie from "@fastify/cookie";
 
 export const app = fastify({ logger: true });
 
@@ -17,7 +19,11 @@ app.register(cors, {
 });
 
 app.register(fastifyJwt, {
-  secret: JWT_SECRET,
+  secret: env.JWT_SECRET,
+});
+
+app.register(fastifyCookie, {
+  secret: env.COOKIE_SECRET,
 });
 
 app.setSerializerCompiler(serializerCompiler);
@@ -32,6 +38,7 @@ app.decorate(
 );
 
 app.register(import("./modules/users/user.route"), { prefix: "/users" });
+app.register(import("./modules/auth/auth.route"), { prefix: "/auth" });
 
 app.get("/health-check", (_request: FastifyRequest, reply: FastifyReply) =>
   reply.status(200).send({ message: "Ok" }),
@@ -40,8 +47,8 @@ app.get("/health-check", (_request: FastifyRequest, reply: FastifyReply) =>
 const start = async () => {
   try {
     validateRequiredEnvVars();
-    await app.listen({ host: HOSTNAME, port: PORT });
-    console.log(`Server is running on http://${HOSTNAME}:${PORT}`);
+    await app.listen({ host: env.HOSTNAME, port: env.PORT });
+    console.log(`Server is running on http://${env.HOSTNAME}:${env.PORT}`);
   } catch (err) {
     console.error(err);
     process.exit(1);

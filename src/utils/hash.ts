@@ -1,8 +1,8 @@
 import { hash, compare } from "bcrypt";
-import { HASH_SALT_ROUNDS } from "../env";
+import env from "../env";
 
 export const hashPassword = async (password: string) => {
-  return hash(password, HASH_SALT_ROUNDS);
+  return hash(password, env.HASH_SALT_ROUNDS);
 };
 
 export const comparePassword = async (password: string, hash: string) => {
