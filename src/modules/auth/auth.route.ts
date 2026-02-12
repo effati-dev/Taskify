@@ -20,4 +20,11 @@ export default (app: FastifyInstance) => {
     schema: { response: { 200: authRequestSchemas.login } },
     handler: authController.refreshHandler,
   });
+
+  app.route({
+    url: "/logout",
+    method: "GET",
+    preHandler: app.authenticate,
+    handler: authController.logoutHandler,
+  });
 };

@@ -16,7 +16,6 @@ export default {
     const user = await authService.verifyLogin(body);
     const { accessToken, refreshToken } = await signTokens(reply, user);
 
-    console.log(`accessToken: ${accessToken}\nrefreshToken: ${refreshToken}`);
     reply.setCookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: env.NODE_ENV === "production",
@@ -42,6 +41,10 @@ export default {
     const { accessToken, refreshToken } = await signTokens(reply, user);
     reply.setCookie("refreshToken", refreshToken);
     return reply.status(200).send({ accessToken, user });
+  },
+  logoutHandler: (request: FastifyRequest, reply: FastifyReply) => {
+    reply.clearCookie("refreshToken");
+    return reply.status(204).send();
   },
 };
 
