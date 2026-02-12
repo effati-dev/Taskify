@@ -31,21 +31,18 @@ export default {
         "Incorrect email or password",
       );
     }
-    return signTokens(user);
+    return user;
   },
-  verifyToken: () => {},
-  refreshToken: () => {},
-};
-
-const signTokens = (user: User) => {
-  const { id, email, name } = user;
-  const accessToken = app.jwt.sign(
-    { id, email, name, type: "access" },
-    { expiresIn: "15m" },
-  );
-  const refreshToken = app.jwt.sign(
-    { id, email, name, type: "refresh" },
-    { expiresIn: "7d" },
-  );
-  return { accessToken, refreshToken };
+  signTokens: (user: User) => {
+    const { id, email, name } = user;
+    const accessToken = app.jwt.sign(
+      { id, email, name, type: "access" },
+      { expiresIn: "15m" },
+    );
+    const refreshToken = app.jwt.sign(
+      { id, email, name, type: "refresh" },
+      { expiresIn: "7d" },
+    );
+    return { accessToken, refreshToken };
+  },
 };

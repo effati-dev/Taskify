@@ -10,7 +10,7 @@ import {
 import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
 
-export const app = fastify({ logger: true });
+export const app = fastify();
 
 app.register(cors, {
   origin: "*",
@@ -19,7 +19,8 @@ app.register(cors, {
 });
 
 app.register(fastifyJwt, {
-  secret: env.JWT_SECRET,
+  secret: env.REFRESH_TOKEN_SECRET,
+  cookie: { cookieName: "refreshToken", signed: false },
 });
 
 app.register(fastifyCookie, {

@@ -13,4 +13,10 @@ export default (app: FastifyInstance) => {
     },
     handler: authController.loginHandler,
   });
+
+  app.route({
+    url: "/refresh",
+    method: "POST",
+    handler: authController.refreshHandler,
+  });
 };
