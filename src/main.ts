@@ -10,7 +10,7 @@ import {
 import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
 
-export const app = fastify();
+const app = fastify();
 
 app.register(cors, {
   origin: "*",
@@ -19,8 +19,20 @@ app.register(cors, {
 });
 
 app.register(fastifyJwt, {
+  secret: env.ACCESS_TOKEN_SECRET,
+  decoratorName: "accessJwt",
+  namespace: "accessJwt",
+  jwtSign: "accessJwtSign",
+  jwtVerify: "accessJwtVerify",
+});
+
+app.register(fastifyJwt, {
   secret: env.REFRESH_TOKEN_SECRET,
   cookie: { cookieName: "refreshToken", signed: false },
+  decoratorName: "refreshJwt",
+  namespace: "refreshJwt",
+  jwtSign: "refreshJwtSign",
+  jwtVerify: "refreshJwtVerify",
 });
 
 app.register(fastifyCookie, {
@@ -33,8 +45,8 @@ app.setErrorHandler(errorHandler);
 
 app.decorate(
   "authenticate",
-  async (request: FastifyRequest, reply: FastifyReply) => {
-    await request.jwtVerify();
+  async (request: FastifyRequest, _reply: FastifyReply) => {
+    await request.accessJwtVerify();
   },
 );
 
