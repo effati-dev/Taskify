@@ -15,8 +15,9 @@ export default (app: FastifyInstance) => {
   });
 
   app.route({
-    url: "/refresh",
+    url: "/refresh-token",
     method: "POST",
+    schema: { response: { 200: authRequestSchemas.login } },
     handler: authController.refreshHandler,
   });
 };

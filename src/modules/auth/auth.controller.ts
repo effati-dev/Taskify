@@ -23,7 +23,7 @@ export default {
       sameSite: "lax",
       maxAge: 60 * 60 * 24 * 7,
     });
-    return reply.status(200).send({ accessToken });
+    return reply.status(200).send({ accessToken, user });
   },
 
   refreshHandler: async (request: FastifyRequest, reply: FastifyReply) => {
@@ -41,7 +41,7 @@ export default {
     const user = await userService.getUserById({ userId: refresh.id });
     const { accessToken, refreshToken } = await signTokens(reply, user);
     reply.setCookie("refreshToken", refreshToken);
-    return reply.status(200).send({ accessToken });
+    return reply.status(200).send({ accessToken, user });
   },
 };
 
