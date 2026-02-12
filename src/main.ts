@@ -24,6 +24,7 @@ app.register(fastifyJwt, {
   namespace: "accessJwt",
   jwtSign: "accessJwtSign",
   jwtVerify: "accessJwtVerify",
+  jwtDecode: "accessJwtDecode",
 });
 
 app.register(fastifyJwt, {
@@ -33,6 +34,7 @@ app.register(fastifyJwt, {
   namespace: "refreshJwt",
   jwtSign: "refreshJwtSign",
   jwtVerify: "refreshJwtVerify",
+  jwtDecode: "refreshJwtDecode",
 });
 
 app.register(fastifyCookie, {

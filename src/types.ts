@@ -3,6 +3,8 @@ import {
   type SignOptions,
   type VerifyOptions,
   type VerifyPayloadType,
+  type FastifyJwtDecodeOptions,
+  type DecodePayloadType,
 } from "@fastify/jwt";
 
 declare module "fastify" {
@@ -19,6 +21,12 @@ declare module "fastify" {
     refreshJwtVerify: (
       options?: Partial<VerifyOptions>,
     ) => Promise<VerifyPayloadType>;
+    accessJwtDecode: (
+      options?: FastifyJwtDecodeOptions,
+    ) => Promise<DecodePayloadType>;
+    refreshJwtDecode: (
+      options?: FastifyJwtDecodeOptions,
+    ) => Promise<DecodePayloadType>;
   }
   interface FastifyReply {
     accessJwtSign: (

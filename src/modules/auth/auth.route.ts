@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import authController from "./auth.controller";
 import { authRequestSchemas } from "./schemas/request";
 import { authResponseSchemas } from "./schemas/response";
+import { userResponseSchemas } from "../users/schemas/response";
 
 export default (app: FastifyInstance) => {
   app.route({
@@ -17,14 +18,22 @@ export default (app: FastifyInstance) => {
   app.route({
     url: "/refresh-token",
     method: "POST",
-    schema: { response: { 200: authRequestSchemas.login } },
+    schema: { response: { 200: authResponseSchemas.login } },
     handler: authController.refreshHandler,
   });
 
   app.route({
     url: "/logout",
     method: "GET",
-    preHandler: app.authenticate,
+    onRequest: app.authenticate,
     handler: authController.logoutHandler,
+  });
+
+  app.route({
+    url: "/me",
+    method: "GET",
+    onRequest: app.authenticate,
+    schema: { response: { 200: userResponseSchemas.getUser } },
+    handler: authController.meHandler,
   });
 };

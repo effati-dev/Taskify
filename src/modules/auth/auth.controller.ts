@@ -16,12 +16,7 @@ export default {
     const user = await authService.verifyLogin(body);
     const { accessToken, refreshToken } = await signTokens(reply, user);
 
-    reply.setCookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
-    });
+    setRefreshToken(reply, refreshToken);
     return reply.status(200).send({ accessToken, user });
   },
 
@@ -39,12 +34,17 @@ export default {
       );
     const user = await userService.getUserById({ userId: refresh.id });
     const { accessToken, refreshToken } = await signTokens(reply, user);
-    reply.setCookie("refreshToken", refreshToken);
+    setRefreshToken(reply, refreshToken);
     return reply.status(200).send({ accessToken, user });
   },
-  logoutHandler: (request: FastifyRequest, reply: FastifyReply) => {
+  logoutHandler: (_request: FastifyRequest, reply: FastifyReply) => {
     reply.clearCookie("refreshToken");
     return reply.status(204).send();
+  },
+  meHandler: async (request: FastifyRequest, reply: FastifyReply) => {
+    const accessData = (await request.accessJwtDecode()) as Record<string, any>;
+    const user = await userService.getUserById({ userId: accessData.id });
+    return reply.status(200).send(user);
   },
 };
 
@@ -59,4 +59,13 @@ const signTokens = async (reply: FastifyReply, user: User) => {
     { expiresIn: "7d" },
   );
   return { accessToken, refreshToken };
+};
+
+const setRefreshToken = (reply: FastifyReply, refreshToken: string) => {
+  reply.setCookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    secure: env.NODE_ENV === "production",
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 7,
+  });
 };
