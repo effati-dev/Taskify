@@ -2,15 +2,16 @@ import errorCodes from "../../errors/errorCodes";
 import { omitUndefined, prisma } from "../../data/prisma";
 import { AppError } from "../../errors/AppError";
 import { comparePassword, hashPassword } from "../../utils/hash";
+
 import type {
-  ChangePasswordRequest,
-  GetUserRequest,
-  RegisterUserRequest,
-  UpdateUserRequest,
-} from "./schemas/request";
+  ChangePasswordDTO,
+  GetUserByIdDTO,
+  RegisterUserDTO,
+  UpdateUserDTO,
+} from "./user.dto";
 
 export default {
-  registerUser: async (input: RegisterUserRequest) => {
+  registerUser: async (input: RegisterUserDTO) => {
     const { password, ...rest } = input;
     return prisma.user.create({
       data: {
@@ -24,30 +25,27 @@ export default {
     return prisma.user.findMany();
   },
 
-  getUserById: async (params: GetUserRequest) => {
+  getUserById: async (where: GetUserByIdDTO) => {
     return prisma.user.findUniqueOrThrow({
       where: {
-        id: params.userId,
+        id: where.userId,
       },
     });
   },
 
-  updateUser: async (params: GetUserRequest, input: UpdateUserRequest) => {
+  updateUser: async (where: GetUserByIdDTO, input: UpdateUserDTO) => {
     return prisma.user.update({
       where: {
-        id: params.userId,
+        id: where.userId,
       },
       data: omitUndefined(input),
     });
   },
 
-  changePassword: async (
-    params: GetUserRequest,
-    input: ChangePasswordRequest,
-  ) => {
+  changePassword: async (where: GetUserByIdDTO, input: ChangePasswordDTO) => {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        id: params.userId,
+        id: where.userId,
       },
     });
     const isPasswordValid = await comparePassword(
@@ -64,7 +62,7 @@ export default {
     }
     return prisma.user.update({
       where: {
-        id: params.userId,
+        id: where.userId,
       },
       data: {
         passwordHash: await hashPassword(input.newPassword),

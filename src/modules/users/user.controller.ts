@@ -6,6 +6,7 @@ import type {
   UpdateUserRequest,
 } from "./schemas/request";
 import userServices from "./user.service";
+import type { ChangePasswordDTO, UpdateUserDTO } from "./user.dto";
 
 export default {
   registerUserHandler: async (
@@ -37,7 +38,10 @@ export default {
     }>,
     reply: FastifyReply,
   ) => {
-    const user = await userServices.updateUser(request.params, request.body);
+    const user = await userServices.updateUser(
+      request.params,
+      request.body as UpdateUserDTO,
+    );
     return reply.status(200).send(user);
   },
 
@@ -50,7 +54,7 @@ export default {
   ) => {
     const user = await userServices.changePassword(
       request.params,
-      request.body,
+      request.body as ChangePasswordDTO,
     );
     return reply.status(200).send(user);
   },
