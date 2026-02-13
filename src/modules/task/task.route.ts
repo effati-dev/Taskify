@@ -14,4 +14,25 @@ export default (app: FastifyInstance) => {
     onRequest: app.authenticate,
     handler: taskController.createHandler,
   });
+
+  app.route({
+    url: "/",
+    method: "GET",
+    schema: {
+      response: { 200: taskResponseSchemas.getManyTasks },
+    },
+    onRequest: app.authenticate,
+    handler: taskController.getUserAllTasksHandler,
+  });
+
+  app.route({
+    url: "/:taskId",
+    method: "GET",
+    schema: {
+      params: taskRequestSchemas.getTaskById,
+      response: { 200: taskResponseSchemas.getTask },
+    },
+    onRequest: app.authenticate,
+    handler: taskController.getUserTaskHandler,
+  });
 };

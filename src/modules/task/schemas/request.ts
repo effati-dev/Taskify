@@ -1,6 +1,5 @@
 import { z } from "zod/v4";
 import { taskCore } from "./core";
-import { title } from "node:process";
 
 export const taskRequestSchemas = {
   createTask: z.object({
@@ -10,7 +9,7 @@ export const taskRequestSchemas = {
   }),
 
   getTaskById: z.object({
-    id: taskCore.id,
+    taskId: taskCore.id,
   }),
 
   upadteTask: z.object({
@@ -21,3 +20,5 @@ export const taskRequestSchemas = {
 };
 
 export type CreateTask = z.infer<typeof taskRequestSchemas.createTask>;
+export type GetTaskById = z.infer<typeof taskRequestSchemas.getTaskById>;
+export type UpdateTask = z.infer<typeof taskRequestSchemas.upadteTask>;
