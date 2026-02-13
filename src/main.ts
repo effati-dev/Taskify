@@ -72,6 +72,7 @@ app.addHook(
 
 app.register(import("./modules/users/user.route"), { prefix: "/users" });
 app.register(import("./modules/auth/auth.route"), { prefix: "/auth" });
+app.register(import("./modules/task/task.route"), { prefix: "/task" });
 
 app.get("/health-check", (_request: FastifyRequest, reply: FastifyReply) =>
   reply.status(200).send({ message: "Ok" }),
