@@ -6,4 +6,5 @@ export const taskCore = {
     .uuid({ error: "Invalid UUID format" }),
   title: z.string({ error: "Invalid title type" }),
   description: z.string({ error: "Invalid description type" }),
+  createdAt: z.date({ error: "Invalid title format" }),
 };
