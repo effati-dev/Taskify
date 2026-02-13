@@ -3,6 +3,7 @@ import type { CreateTask } from "./schemas/request";
 import taskService from "./task.service";
 import type { UpdateTask } from "./task.dto";
 import type { GetTaskById } from "./schemas/params";
+import type { GetManyTasksQuery } from "./schemas/query";
 
 export default {
   createHandler: async (
@@ -16,11 +17,11 @@ export default {
   },
 
   getUserAllTasksHandler: async (
-    request: FastifyRequest,
+    request: FastifyRequest<{ Querystring: GetManyTasksQuery }>,
     reply: FastifyReply,
   ) => {
     const userId = (request.user as Record<string, any>).id;
-    const tasks = await taskService.getAllTasks(userId);
+    const tasks = await taskService.getAllTasks(userId, request.query);
     return reply.status(200).send(tasks);
   },
 

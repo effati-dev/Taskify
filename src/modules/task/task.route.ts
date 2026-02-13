@@ -3,6 +3,7 @@ import taskController from "./task.controller";
 import { taskRequestSchemas } from "./schemas/request";
 import { taskResponseSchemas } from "./schemas/response";
 import { taskParamSchemas } from "./schemas/params";
+import { taskQuerySchemas } from "./schemas/query";
 
 export default (app: FastifyInstance) => {
   app.route({
@@ -20,6 +21,7 @@ export default (app: FastifyInstance) => {
     url: "/",
     method: "GET",
     schema: {
+      querystring: taskQuerySchemas.getManyTasks,
       response: { 200: taskResponseSchemas.getManyTasks },
     },
     onRequest: app.authenticate,

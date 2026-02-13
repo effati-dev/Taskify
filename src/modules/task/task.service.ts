@@ -1,14 +1,44 @@
 import { omitUndefined, prisma } from "../../data/prisma";
 import { AppError } from "../../errors/AppError";
-import type { CreateTask, UpdateTask } from "./task.dto";
+import type {
+  TaskOrderByWithRelationInput,
+  TaskWhereInput,
+} from "../../generated/prisma/models";
+import { buildPagination } from "../../utils/pagination";
+import { buildOrderBy } from "../../utils/sort";
+import type { CreateTask, GetAllTasksQueryDTO, UpdateTask } from "./task.dto";
 
 export default {
   createTask: async (userId: string, input: CreateTask) => {
     return prisma.task.create({ data: { ...omitUndefined(input), userId } });
   },
 
-  getAllTasks: async (userId: string) => {
-    return prisma.task.findMany({ where: { userId } });
+  getAllTasks: async (userId: string, query: GetAllTasksQueryDTO) => {
+    const { skip, take } = buildPagination(query.page, query.limit);
+    const status = query.status;
+
+    // Use search field to search in name
+    // Use status field to find requested status
+    // The result owner must be logged in user
+    const where: TaskWhereInput = {
+      userId,
+      ...(query.status && { status: query.status }),
+      ...(query.search && {
+        OR: [
+          {
+            title: {
+              contains: query.search,
+              mode: "insensitive",
+            },
+          },
+        ],
+      }),
+    };
+    const orderBy = buildOrderBy<TaskOrderByWithRelationInput>(query.sort, {
+      createdAt: "desc",
+    });
+
+    return prisma.task.findMany({ skip, take, where, orderBy });
   },
 
   getTask: async (userId: string, taskId: string) => {
