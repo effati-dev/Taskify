@@ -3,7 +3,6 @@ import { taskCore } from "./core";
 
 export const taskRequestSchemas = {
   createTask: z.object({
-    id: taskCore.id,
     title: taskCore.title,
     description: taskCore.description.optional(),
   }),
