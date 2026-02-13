@@ -1,12 +1,12 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type {
   ChangePasswordRequest,
-  GetUserRequest,
   RegisterUserRequest,
   UpdateUserRequest,
 } from "./schemas/request";
 import userServices from "./user.service";
 import type { ChangePasswordDTO, UpdateUserDTO } from "./user.dto";
+import type { GetUserByIdParam } from "./schemas/params";
 
 export default {
   registerUserHandler: async (
@@ -24,7 +24,7 @@ export default {
   },
 
   getUserByIdHandler: async (
-    request: FastifyRequest<{ Params: GetUserRequest }>,
+    request: FastifyRequest<{ Params: GetUserByIdParam }>,
     reply: FastifyReply,
   ) => {
     const user = await userServices.getUserById(request.params.userId);
@@ -33,7 +33,7 @@ export default {
 
   updateUserHandler: async (
     request: FastifyRequest<{
-      Params: GetUserRequest;
+      Params: GetUserByIdParam;
       Body: UpdateUserRequest;
     }>,
     reply: FastifyReply,
@@ -47,7 +47,7 @@ export default {
 
   changePasswordHandler: async (
     request: FastifyRequest<{
-      Params: GetUserRequest;
+      Params: GetUserByIdParam;
       Body: ChangePasswordRequest;
     }>,
     reply: FastifyReply,

@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import userController from "./user.controller";
 import { userRequestSchemas } from "./schemas/request";
 import { userResponseSchemas } from "./schemas/response";
+import { userParamSchemas } from "./schemas/params";
 
 export default (app: FastifyInstance) => {
   app.route({
@@ -27,7 +28,7 @@ export default (app: FastifyInstance) => {
     method: "GET",
     onRequest: app.authenticate,
     schema: {
-      params: userRequestSchemas.getUser,
+      params: userParamSchemas.getUserById,
       response: { 200: userResponseSchemas.getUser },
     },
     handler: userController.getUserByIdHandler,
@@ -38,7 +39,7 @@ export default (app: FastifyInstance) => {
     method: "PUT",
     onRequest: app.authenticate,
     schema: {
-      params: userRequestSchemas.getUser,
+      params: userParamSchemas.getUserById,
       body: userRequestSchemas.updateUser,
       response: { 200: userResponseSchemas.getUser },
     },
@@ -50,7 +51,7 @@ export default (app: FastifyInstance) => {
     method: "PUT",
     onRequest: app.authenticate,
     schema: {
-      params: userRequestSchemas.getUser,
+      params: userParamSchemas.getUserById,
       body: userRequestSchemas.changePassword,
       response: { 200: userResponseSchemas.getUser },
     },
