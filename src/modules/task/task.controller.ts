@@ -1,7 +1,8 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
-import type { CreateTask, GetTaskById } from "./schemas/request";
+import type { CreateTask } from "./schemas/request";
 import taskService from "./task.service";
 import type { UpdateTask } from "./task.dto";
+import type { GetTaskById } from "./schemas/params";
 
 export default {
   createHandler: async (

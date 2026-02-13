@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import taskController from "./task.controller";
 import { taskRequestSchemas } from "./schemas/request";
 import { taskResponseSchemas } from "./schemas/response";
+import { taskParamSchemas } from "./schemas/params";
 
 export default (app: FastifyInstance) => {
   app.route({
@@ -29,7 +30,7 @@ export default (app: FastifyInstance) => {
     url: "/:taskId",
     method: "GET",
     schema: {
-      params: taskRequestSchemas.getTaskById,
+      params: taskParamSchemas.getTaskById,
       response: { 200: taskResponseSchemas.getTask },
     },
     onRequest: app.authenticate,
@@ -40,7 +41,7 @@ export default (app: FastifyInstance) => {
     url: "/:taskId",
     method: "PUT",
     schema: {
-      params: taskRequestSchemas.getTaskById,
+      params: taskParamSchemas.getTaskById,
       body: taskRequestSchemas.upadteTask,
       response: { 200: taskResponseSchemas.getTask },
     },
@@ -52,7 +53,7 @@ export default (app: FastifyInstance) => {
     url: "/:taskId",
     method: "DELETE",
     schema: {
-      params: taskRequestSchemas.getTaskById,
+      params: taskParamSchemas.getTaskById,
     },
     onRequest: app.authenticate,
     handler: taskController.deleteTask,

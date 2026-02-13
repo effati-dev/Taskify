@@ -8,10 +8,6 @@ export const taskRequestSchemas = {
     status: taskCore.status,
   }),
 
-  getTaskById: z.object({
-    taskId: taskCore.id,
-  }),
-
   upadteTask: z.object({
     title: taskCore.title.optional(),
     description: taskCore.description.optional(),
@@ -20,5 +16,4 @@ export const taskRequestSchemas = {
 };
 
 export type CreateTask = z.infer<typeof taskRequestSchemas.createTask>;
-export type GetTaskById = z.infer<typeof taskRequestSchemas.getTaskById>;
 export type UpdateTask = z.infer<typeof taskRequestSchemas.upadteTask>;
