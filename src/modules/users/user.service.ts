@@ -5,7 +5,6 @@ import { comparePassword, hashPassword } from "../../utils/hash";
 
 import type {
   ChangePasswordDTO,
-  GetUserByIdDTO,
   RegisterUserDTO,
   UpdateUserDTO,
 } from "./user.dto";
@@ -25,27 +24,27 @@ export default {
     return prisma.user.findMany();
   },
 
-  getUserById: async (where: GetUserByIdDTO) => {
+  getUserById: async (userId: string) => {
     return prisma.user.findUniqueOrThrow({
       where: {
-        id: where.userId,
+        id: userId,
       },
     });
   },
 
-  updateUser: async (where: GetUserByIdDTO, input: UpdateUserDTO) => {
+  updateUser: async (userId: string, input: UpdateUserDTO) => {
     return prisma.user.update({
       where: {
-        id: where.userId,
+        id: userId,
       },
       data: omitUndefined(input),
     });
   },
 
-  changePassword: async (where: GetUserByIdDTO, input: ChangePasswordDTO) => {
+  changePassword: async (userId: string, input: ChangePasswordDTO) => {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
-        id: where.userId,
+        id: userId,
       },
     });
     const isPasswordValid = await comparePassword(
@@ -62,7 +61,7 @@ export default {
     }
     return prisma.user.update({
       where: {
-        id: where.userId,
+        id: userId,
       },
       data: {
         passwordHash: await hashPassword(input.newPassword),

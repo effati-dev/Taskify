@@ -27,7 +27,7 @@ export default {
     request: FastifyRequest<{ Params: GetUserRequest }>,
     reply: FastifyReply,
   ) => {
-    const user = await userServices.getUserById(request.params);
+    const user = await userServices.getUserById(request.params.userId);
     return reply.status(200).send(user);
   },
 
@@ -39,7 +39,7 @@ export default {
     reply: FastifyReply,
   ) => {
     const user = await userServices.updateUser(
-      request.params,
+      request.params.userId,
       request.body as UpdateUserDTO,
     );
     return reply.status(200).send(user);
@@ -53,7 +53,7 @@ export default {
     reply: FastifyReply,
   ) => {
     const user = await userServices.changePassword(
-      request.params,
+      request.params.userId,
       request.body as ChangePasswordDTO,
     );
     return reply.status(200).send(user);

@@ -4,14 +4,6 @@ export type RegisterUserDTO = {
   password: string;
 };
 
-export type GetUserByIdDTO = {
-  userId: string;
-};
-
-export type GetUserByEmailDTO = {
-  email: string;
-};
-
 export type UpdateUserDTO = {
   userId: string;
   email?: string;
