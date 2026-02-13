@@ -3,6 +3,7 @@ import userController from "./user.controller";
 import { userRequestSchemas } from "./schemas/request";
 import { userResponseSchemas } from "./schemas/response";
 import { userParamSchemas } from "./schemas/params";
+import { userQuerySchemas } from "./schemas/query";
 
 export default (app: FastifyInstance) => {
   app.route({
@@ -19,7 +20,10 @@ export default (app: FastifyInstance) => {
     url: "/",
     onRequest: app.authenticate,
     method: "GET",
-    schema: { response: { 200: userResponseSchemas.getManyUsers } },
+    schema: {
+      querystring: userQuerySchemas.getManyUsers,
+      response: { 200: userResponseSchemas.getManyUsers },
+    },
     handler: userController.getAllUsersHandler,
   });
 

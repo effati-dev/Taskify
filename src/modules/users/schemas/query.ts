@@ -18,4 +18,4 @@ export const userQuerySchemas = {
   }),
 };
 
-export type GetUserByIdQuery = z.infer<typeof userQuerySchemas.getManyUsers>;
+export type GetManyUsersQuery = z.infer<typeof userQuerySchemas.getManyUsers>;

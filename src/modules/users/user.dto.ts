@@ -15,3 +15,10 @@ export type ChangePasswordDTO = {
   oldPassword: string;
   newPassword: string;
 };
+
+export type GetAllUsersQueryDTO = {
+  page: number;
+  limit: number;
+  search?: string | undefined;
+  sort?: "createdAt_asc" | "createdAt_desc" | undefined;
+};

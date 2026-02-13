@@ -2,12 +2,18 @@ import errorCodes from "../../errors/errorCodes";
 import { omitUndefined, prisma } from "../../data/prisma";
 import { AppError } from "../../errors/AppError";
 import { comparePassword, hashPassword } from "../../utils/hash";
-
 import type {
   ChangePasswordDTO,
+  GetAllUsersQueryDTO,
   RegisterUserDTO,
   UpdateUserDTO,
 } from "./user.dto";
+import type {
+  UserOrderByWithRelationInput,
+  UserWhereInput,
+} from "../../generated/prisma/models";
+import { buildOrderBy } from "../../utils/sort";
+import { buildPagination } from "../../utils/pagination";
 
 export default {
   registerUser: async (input: RegisterUserDTO) => {
@@ -20,8 +26,28 @@ export default {
     });
   },
 
-  getAllUsers: async () => {
-    return prisma.user.findMany();
+  getAllUsers: async (query: GetAllUsersQueryDTO) => {
+    const { skip, take } = buildPagination(query.page, query.limit);
+    // Use search field to search in names and emails
+    const where: UserWhereInput = {
+      ...(query.search && {
+        OR: [
+          { email: { contains: query.search, mode: "insensitive" } },
+          { name: { contains: query.search, mode: "insensitive" } },
+        ],
+      }),
+    };
+    // OrderBy createdAt desc by default
+    const orderBy = buildOrderBy<UserOrderByWithRelationInput>(query.sort, {
+      createdAt: "desc",
+    });
+
+    return prisma.user.findMany({
+      skip,
+      take,
+      where,
+      orderBy,
+    });
   },
 
   getUserById: async (userId: string) => {

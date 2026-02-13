@@ -5,8 +5,13 @@ import type {
   UpdateUserRequest,
 } from "./schemas/request";
 import userServices from "./user.service";
-import type { ChangePasswordDTO, UpdateUserDTO } from "./user.dto";
+import type {
+  ChangePasswordDTO,
+  GetAllUsersQueryDTO,
+  UpdateUserDTO,
+} from "./user.dto";
 import type { GetUserByIdParam } from "./schemas/params";
+import type { GetManyUsersQuery } from "./schemas/query";
 
 export default {
   registerUserHandler: async (
@@ -18,8 +23,11 @@ export default {
     return reply.status(201).send(user);
   },
 
-  getAllUsersHandler: async (_request: FastifyRequest, reply: FastifyReply) => {
-    const users = await userServices.getAllUsers();
+  getAllUsersHandler: async (
+    request: FastifyRequest<{ Querystring: GetManyUsersQuery }>,
+    reply: FastifyReply,
+  ) => {
+    const users = await userServices.getAllUsers(request.query);
     return reply.status(200).send(users);
   },
 
