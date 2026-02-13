@@ -1,5 +1,4 @@
-import fastify, { type FastifyReply, type FastifyRequest } from "fastify";
-import cors from "@fastify/cors";
+import fastify from "fastify";
 import { validateRequiredEnvVars } from "./env";
 import env from "./env";
 import errorHandler from "./errors/errorHandler";
@@ -7,76 +6,21 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
-import fastifyJwt from "@fastify/jwt";
-import fastifyCookie from "@fastify/cookie";
+import registerRoutes from "./app/routes";
+import registerServices from "./app/services";
+import registerDecorators from "./app/decorators";
 
 const app = fastify({ logger: true });
-
-app.register(cors, {
-  origin: "*",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-});
-
-app.register(fastifyJwt, {
-  secret: env.ACCESS_TOKEN_SECRET,
-  decoratorName: "accessJwt",
-  namespace: "accessJwt",
-  jwtSign: "accessJwtSign",
-  jwtVerify: "accessJwtVerify",
-  jwtDecode: "accessJwtDecode",
-});
-
-app.register(fastifyJwt, {
-  secret: env.REFRESH_TOKEN_SECRET,
-  cookie: { cookieName: "refreshToken", signed: false },
-  decoratorName: "refreshJwt",
-  namespace: "refreshJwt",
-  jwtSign: "refreshJwtSign",
-  jwtVerify: "refreshJwtVerify",
-  jwtDecode: "refreshJwtDecode",
-});
-
-app.register(fastifyCookie, {
-  secret: env.COOKIE_SECRET,
-});
 
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);
 app.setErrorHandler(errorHandler);
 
-app.decorate(
-  "authenticate",
-  async (request: FastifyRequest, _reply: FastifyReply) => {
-    await request.accessJwtVerify();
-  },
-);
+registerServices(app);
 
-app.addHook(
-  "onRequest",
-  async (request: FastifyRequest, _reply: FastifyReply) => {
-    if (!request.headers.authorization) {
-      return;
-    }
-    try {
-      const accessTokenData = (await request.accessJwtDecode()) as Record<
-        string,
-        any
-      >;
-      request.user = accessTokenData.user;
-    } catch (err) {
-      request.log.error(`Token decoding failed: ${err}`);
-    }
-  },
-);
+registerDecorators(app);
 
-app.register(import("./modules/users/user.route"), { prefix: "/users" });
-app.register(import("./modules/auth/auth.route"), { prefix: "/auth" });
-app.register(import("./modules/task/task.route"), { prefix: "/task" });
-
-app.get("/health-check", (_request: FastifyRequest, reply: FastifyReply) =>
-  reply.status(200).send({ message: "Ok" }),
-);
+registerRoutes(app);
 
 const start = async () => {
   try {
