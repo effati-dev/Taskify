@@ -1,6 +1,7 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 import type { CreateTask, GetTaskById } from "./schemas/request";
 import taskService from "./task.service";
+import type { UpdateTask } from "./task.dto";
 
 export default {
   createHandler: async (
@@ -10,7 +11,7 @@ export default {
     const body = request.body;
     const userId = (request.user as Record<string, any>).id;
     const task = await taskService.createTask(userId, body);
-    return reply.status(200).send(task);
+    return reply.status(201).send(task);
   },
 
   getUserAllTasksHandler: async (
@@ -18,7 +19,7 @@ export default {
     reply: FastifyReply,
   ) => {
     const userId = (request.user as Record<string, any>).id;
-    const tasks = await taskService.getUserAllTasks(userId);
+    const tasks = await taskService.getAllTasks(userId);
     return reply.status(200).send(tasks);
   },
 
@@ -28,7 +29,28 @@ export default {
   ) => {
     const userId = (request.user as Record<string, any>).id;
     const taskId = request.params.taskId;
-    const task = await taskService.getUserTask(userId, taskId);
+    const task = await taskService.getTask(userId, taskId);
     return reply.status(200).send(task);
+  },
+
+  updateTask: async (
+    request: FastifyRequest<{ Body: UpdateTask; Params: GetTaskById }>,
+    reply: FastifyReply,
+  ) => {
+    const userId = (request.user as Record<string, any>).id;
+    const taskId = request.params.taskId;
+    const body = request.body;
+    const task = await taskService.updateTask(userId, taskId, body);
+    return reply.status(200).send(task);
+  },
+
+  deleteTask: async (
+    request: FastifyRequest<{ Params: GetTaskById }>,
+    reply: FastifyReply,
+  ) => {
+    const userId = (request.user as Record<string, any>).id;
+    const taskId = request.params.taskId;
+    await taskService.deleteTask(userId, taskId);
+    return reply.status(204).send();
   },
 };
