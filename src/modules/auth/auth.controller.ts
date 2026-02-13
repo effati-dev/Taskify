@@ -32,7 +32,7 @@ export default {
         "Unauthorized",
         "Invalid Refresh Token",
       );
-    const user = await userService.getUserById({ userId: refresh.id });
+    const user = await userService.getUserById(refresh.id);
     const { accessToken, refreshToken } = await signTokens(reply, user);
     setRefreshToken(reply, refreshToken);
     return reply.status(200).send({ accessToken, user });
@@ -43,7 +43,7 @@ export default {
   },
   meHandler: async (request: FastifyRequest, reply: FastifyReply) => {
     const accessData = (await request.accessJwtDecode()) as Record<string, any>;
-    const user = await userService.getUserById({ userId: accessData.id });
+    const user = await userService.getUserById(accessData.id);
     return reply.status(200).send(user);
   },
 };
