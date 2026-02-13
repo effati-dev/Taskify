@@ -10,7 +10,7 @@ import {
 import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
 
-const app = fastify();
+const app = fastify({ logger: true });
 
 app.register(cors, {
   origin: "*",
@@ -49,6 +49,24 @@ app.decorate(
   "authenticate",
   async (request: FastifyRequest, _reply: FastifyReply) => {
     await request.accessJwtVerify();
+  },
+);
+
+app.addHook(
+  "onRequest",
+  async (request: FastifyRequest, _reply: FastifyReply) => {
+    if (!request.headers.authorization) {
+      return;
+    }
+    try {
+      const accessTokenData = (await request.accessJwtDecode()) as Record<
+        string,
+        any
+      >;
+      request.user = accessTokenData.user;
+    } catch (err) {
+      request.log.error(`Token decoding failed: ${err}`);
+    }
   },
 );
 

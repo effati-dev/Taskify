@@ -5,7 +5,7 @@ import env from "../../env";
 import { AppError } from "../../errors/AppError";
 import errorCodes from "../../errors/errorCodes";
 import userService from "../users/user.service";
-import type { Prisma, User } from "../../generated/prisma/client";
+import type { User } from "../../generated/prisma/client";
 
 export default {
   loginHandler: async (
@@ -21,29 +21,34 @@ export default {
   },
 
   refreshHandler: async (request: FastifyRequest, reply: FastifyReply) => {
-    const refresh = (await request.refreshJwtVerify({
+    const refreshTokenData = (await request.refreshJwtVerify({
       onlyCookie: true,
     })) as Record<string, any>;
 
-    if (refresh.type !== "refresh")
+    if (refreshTokenData.type !== "refresh")
       throw new AppError(
         401,
         errorCodes.UNAUTHORIZED,
         "Unauthorized",
         "Invalid Refresh Token",
       );
-    const user = await userService.getUserById(refresh.id);
+    const user = await userService.getUserById(refreshTokenData.userId);
     const { accessToken, refreshToken } = await signTokens(reply, user);
     setRefreshToken(reply, refreshToken);
     return reply.status(200).send({ accessToken, user });
   },
+
   logoutHandler: (_request: FastifyRequest, reply: FastifyReply) => {
     reply.clearCookie("refreshToken");
     return reply.status(204).send();
   },
+
   meHandler: async (request: FastifyRequest, reply: FastifyReply) => {
-    const accessData = (await request.accessJwtDecode()) as Record<string, any>;
-    const user = await userService.getUserById(accessData.id);
+    const accessTokenData = (await request.accessJwtDecode()) as Record<
+      string,
+      any
+    >;
+    const user = await userService.getUserById(accessTokenData.user.id);
     return reply.status(200).send(user);
   },
 };
@@ -51,11 +56,11 @@ export default {
 const signTokens = async (reply: FastifyReply, user: User) => {
   const { id, email, name } = user;
   const accessToken = await reply.accessJwtSign(
-    { id, email, name, type: "access" },
+    { user: { id, email, name }, type: "access" },
     { expiresIn: "15m" },
   );
   const refreshToken = await reply.refreshJwtSign(
-    { id, email, name, type: "refresh" },
+    { userId: id, type: "refresh" },
     { expiresIn: "7d" },
   );
   return { accessToken, refreshToken };
