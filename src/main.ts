@@ -8,7 +8,7 @@ import {
 } from "fastify-type-provider-zod";
 import registerRoutes from "./app/routes";
 import registerServices from "./app/services";
-import registerDecorators from "./app/decorators";
+import registerDecorators from "./app/middlewares";
 
 const app = fastify({ logger: true });
 
