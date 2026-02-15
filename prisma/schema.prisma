@@ -18,9 +18,19 @@ model User {
   email String @unique
   name String?
   passwordHash String @map("password_hash")
+  tasks Task[]
+  roleId Int 
+  role Role @relation(fields: [roleId], references: [id]) 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  Tasks Task[]
+}
+
+model Role {
+  id Int @id @default(autoincrement())
+  name String @unique
+  key String @unique
+  description String?
+  users User[]
 }
 
 model Task {
@@ -28,7 +38,7 @@ model Task {
   title String
   description String?
   status TaskStatus
-  userId String 
+  userId String @map("user_id")
   user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
