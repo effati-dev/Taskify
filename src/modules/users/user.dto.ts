@@ -2,6 +2,7 @@ export type RegisterUserDTO = {
   email: string;
   name?: string;
   password: string;
+  roleId: number;
 };
 
 export type UpdateUserDTO = {

@@ -6,6 +6,7 @@ export const userRequestSchemas = {
     email: userCore.email,
     name: userCore.name,
     password: userCore.password,
+    roleId: userCore.roleId,
   }),
 
   updateUser: z.object({

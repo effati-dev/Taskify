@@ -10,7 +10,7 @@ import registerRoutes from "./app/routes";
 import registerServices from "./app/services";
 import registerMiddlewares from "./app/middlewares";
 
-const app = fastify({ logger: true });
+export const app = fastify({ logger: true });
 
 app.setSerializerCompiler(serializerCompiler);
 app.setValidatorCompiler(validatorCompiler);

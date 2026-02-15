@@ -6,6 +6,7 @@ export const userResponseSchemas = {
     id: userCore.id,
     email: userCore.email,
     name: userCore.name,
+    roleId: userCore.roleId,
   }),
 
   getManyUsers: z.array(
@@ -13,6 +14,7 @@ export const userResponseSchemas = {
       id: userCore.id,
       email: userCore.email,
       name: userCore.name,
+      roleId: userCore.roleId,
     }),
   ),
 };

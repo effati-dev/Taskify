@@ -5,11 +5,7 @@ import type {
   UpdateUserRequest,
 } from "./schemas/request";
 import userServices from "./user.service";
-import type {
-  ChangePasswordDTO,
-  GetAllUsersQueryDTO,
-  UpdateUserDTO,
-} from "./user.dto";
+import type { ChangePasswordDTO, UpdateUserDTO } from "./user.dto";
 import type { GetUserByIdParam } from "./schemas/params";
 import type { GetManyUsersQuery } from "./schemas/query";
 
@@ -19,7 +15,10 @@ export default {
     reply: FastifyReply,
   ) => {
     const body = request.body;
-    const user = await userServices.registerUser(body);
+    const user = await userServices.registerUser(
+      body,
+      (request.user as Record<string, any>)?.role,
+    );
     return reply.status(201).send(user);
   },
 

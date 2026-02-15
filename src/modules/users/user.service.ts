@@ -16,14 +16,21 @@ import { buildOrderBy } from "../../utils/sort";
 import { buildPagination } from "../../utils/pagination";
 
 export default {
-  registerUser: async (input: RegisterUserDTO) => {
-    const { password, ...rest } = input;
-    return prisma.user.create({
+  registerUser: async (input: RegisterUserDTO, userRole?: string) => {
+    const { roleId, password, ...rest } = input;
+    let role = "user";
+    if (userRole === "admin")
+      role = (await prisma.role.findUniqueOrThrow({ where: { id: roleId } }))
+        .key;
+    const user = await prisma.user.create({
       data: {
         ...rest,
         passwordHash: await hashPassword(password),
+        role: { connect: { key: role } },
       },
     });
+    console.log(user);
+    return user;
   },
 
   getAllUsers: async (query: GetAllUsersQueryDTO) => {
