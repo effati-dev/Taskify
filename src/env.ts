@@ -24,6 +24,8 @@ export default {
   REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET || "",
   COOKIE_SECRET: process.env.COOKIE_SECRET || "",
   NODE_ENV: process.env.NODE_ENV || "production",
+  ADMIN_INITIAL_EMAIL: process.env.ADMIN_INITIAL_EMAIL || "",
+  ADMIN_INITIAL_PASSWORD: process.env.ADMIN_INITIAL_PASSWORD || "",
 } as const;
 
 export { validateRequiredEnvVars };
