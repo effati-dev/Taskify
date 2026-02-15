@@ -1,6 +1,8 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
+import { AppError } from "../errors/AppError";
 
-const registerDecorators = (app: FastifyInstance) => {
+const registerMiddlewares = (app: FastifyInstance) => {
+  // User must be authenticated
   app.decorate(
     "authenticate",
     async (request: FastifyRequest, _reply: FastifyReply) => {
@@ -8,6 +10,26 @@ const registerDecorators = (app: FastifyInstance) => {
     },
   );
 
+  // User must be authorized as given role
+  app.decorate(
+    "authorize",
+    async (allowedRoles: string[]) =>
+      async (request: FastifyRequest, reply: FastifyReply) => {
+        const userRoles = (request.user as Record<string, any>)
+          .roles as string[];
+        let isAuthorized = false;
+        allowedRoles.forEach((allowedRole) => {
+          if (userRoles.includes(allowedRole)) {
+            isAuthorized = true;
+            return;
+          }
+        });
+        if (!isAuthorized)
+          throw new AppError(403, "FORBIDDEN", "Forbidden", "Acees Denied.");
+      },
+  );
+
+  // Put user data from accessToken to request.user
   app.addHook(
     "onRequest",
     async (request: FastifyRequest, _reply: FastifyReply) => {
@@ -27,4 +49,4 @@ const registerDecorators = (app: FastifyInstance) => {
   );
 };
 
-export default registerDecorators;
+export default registerMiddlewares;
