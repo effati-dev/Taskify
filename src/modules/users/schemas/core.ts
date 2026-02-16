@@ -14,8 +14,11 @@ export const userCore = {
     .string({ error: "Invalid string type" })
     .min(6, { error: "Password must be at least 6 characters" })
     .max(100, { error: "Password must be at most 100 characters" }),
-  roleKey: z.string({ error: "Invalid string type" }),
-  roleId: z
-    .number({ error: "Invalid number type" })
-    .int({ error: "Invalid int type" }),
+  roleId: z.string({ error: "Invalid string type" }),
+};
+
+export const roleCore = {
+  id: z.string({ error: "Invalid string type" }),
+  name: z.string({ error: "Invalid string type" }),
+  description: z.string({ error: "Invalid string type" }),
 };

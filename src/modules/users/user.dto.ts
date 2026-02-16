@@ -2,7 +2,7 @@ export type RegisterUserDTO = {
   email: string;
   name?: string;
   password: string;
-  roleId: number;
+  roleId: string;
 };
 
 export type UpdateUserDTO = {

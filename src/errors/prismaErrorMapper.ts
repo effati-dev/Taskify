@@ -17,6 +17,15 @@ export default (err: PrismaClientKnownRequestError): ResponseError => {
         message: `${fieldText} already exists`,
       };
     }
+    case "P2003": {
+      return {
+        statusCode: 400,
+        code: errorCodes.PRISMA_FOREIGN_KEY_CONSTRAINT,
+        name: "Foreign Key Constraint Error",
+        message:
+          "Invalid reference: related resource does not exist or is still in use",
+      };
+    }
     case "P2025":
       return {
         statusCode: 404,

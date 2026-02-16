@@ -12,6 +12,7 @@ export const userRequestSchemas = {
   updateUser: z.object({
     email: userCore.email.optional(),
     name: userCore.name.optional(),
+    roleId: userCore.roleId.optional(),
   }),
 
   changePassword: z.object({

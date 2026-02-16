@@ -1,12 +1,12 @@
 import z from "zod";
-import { userCore } from "./core";
+import { roleCore, userCore } from "./core";
 
 export const userResponseSchemas = {
   getUser: z.object({
     id: userCore.id,
     email: userCore.email,
     name: userCore.name,
-    roleId: userCore.roleId,
+    role: z.object(roleCore),
   }),
 
   getManyUsers: z.array(

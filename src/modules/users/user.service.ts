@@ -16,18 +16,18 @@ import { buildOrderBy } from "../../utils/sort";
 import { buildPagination } from "../../utils/pagination";
 
 export default {
-  registerUser: async (input: RegisterUserDTO, userRole?: string) => {
+  registerUser: async (input: RegisterUserDTO, userRoleId?: string) => {
     const { roleId, password, ...rest } = input;
-    let role = "user";
-    if (userRole === "admin")
-      role = (await prisma.role.findUniqueOrThrow({ where: { id: roleId } }))
-        .key;
+
+    // Only admins are allowed to set roleId
+    const finalRoleId = userRoleId === "admin" && roleId ? roleId : "user";
     const user = await prisma.user.create({
       data: {
         ...rest,
         passwordHash: await hashPassword(password),
-        role: { connect: { key: role } },
+        roleId: finalRoleId,
       },
+      include: { role: true },
     });
     console.log(user);
     return user;
@@ -72,6 +72,7 @@ export default {
         id: userId,
       },
       data: omitUndefined(input),
+      include: { role: true },
     });
   },
 
@@ -100,6 +101,7 @@ export default {
       data: {
         passwordHash: await hashPassword(input.newPassword),
       },
+      include: { role: true },
     });
   },
 };
