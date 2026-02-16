@@ -3,14 +3,14 @@ import { hashPassword } from "../utils/hash";
 import { prisma } from "./prisma";
 
 const roles = [
-  { name: "User", key: "user" },
-  { name: "Admin", key: "admin" },
+  { name: "User", id: "user" },
+  { name: "Admin", id: "admin" },
 ];
 
 const users = [
   {
     email: env.ADMIN_INITIAL_EMAIL || "admin@mail.com",
-    role: { connect: { key: "admin" } },
+    role: { connect: { id: "admin" } },
     name: "Admin",
     passwordHash: await hashPassword(env.ADMIN_INITIAL_PASSWORD || "123456"),
   },

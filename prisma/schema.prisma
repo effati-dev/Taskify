@@ -19,16 +19,15 @@ model User {
   name String?
   passwordHash String @map("password_hash")
   tasks Task[]
-  roleId Int 
+  roleId String 
   role Role @relation(fields: [roleId], references: [id],onDelete: SetDefault)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 }
 
 model Role {
-  id Int @id @default(autoincrement())
+  id String @id
   name String @unique
-  key String @unique
   description String?
   users User[]
 }
