@@ -5,7 +5,7 @@ import env from "../../env";
 import { AppError } from "../../errors/AppError";
 import errorCodes from "../../errors/errorCodes";
 import userService from "../users/user.service";
-import type { User } from "../../generated/prisma/client";
+import type { User, Role } from "../../generated/prisma/client";
 
 export default {
   loginHandler: async (
@@ -53,10 +53,10 @@ export default {
   },
 };
 
-const signTokens = async (reply: FastifyReply, user: User) => {
-  const { id, email, name } = user;
+const signTokens = async (reply: FastifyReply, user: User & { role: Role }) => {
+  const { id, email, name, role } = user;
   const accessToken = await reply.accessJwtSign(
-    { user: { id, email, name }, type: "access" },
+    { user: { id, email, name, role: role.key }, type: "access" },
     { expiresIn: "15m" },
   );
   const refreshToken = await reply.refreshJwtSign(

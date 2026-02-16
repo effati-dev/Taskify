@@ -8,7 +8,9 @@ export default {
   verifyLogin: async (input: LoginDTO) => {
     const user = await prisma.user.findUnique({
       where: { email: input.email },
+      include: { role: true },
     });
+
     if (!user) {
       throw new AppError(
         401,
