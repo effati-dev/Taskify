@@ -53,10 +53,10 @@ export default {
   },
 };
 
-const signTokens = async (reply: FastifyReply, user: User & { role: Role }) => {
-  const { id, email, name, role } = user;
+const signTokens = async (reply: FastifyReply, user: User) => {
+  const { id, roleId } = user;
   const accessToken = await reply.accessJwtSign(
-    { user: { id, email, name, role: role.key }, type: "access" },
+    { user: { id, roleId }, type: "access" },
     { expiresIn: "15m" },
   );
   const refreshToken = await reply.refreshJwtSign(

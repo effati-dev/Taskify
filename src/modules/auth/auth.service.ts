@@ -1,15 +1,12 @@
-import { prisma } from "../../data/prisma";
 import { AppError } from "../../errors/AppError";
 import errorCodes from "../../errors/errorCodes";
 import { comparePassword } from "../../utils/hash";
+import userService from "../users/user.service";
 import type { LoginDTO } from "./auth.dto";
 
 export default {
   verifyLogin: async (input: LoginDTO) => {
-    const user = await prisma.user.findUnique({
-      where: { email: input.email },
-      include: { role: true },
-    });
+    const user = await userService.getUserByEmail(input.email);
 
     if (!user) {
       throw new AppError(

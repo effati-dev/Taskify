@@ -66,6 +66,15 @@ export default {
     });
   },
 
+  getUserByEmail: async (email: string) => {
+    return prisma.user.findUnique({
+      where: {
+        email,
+      },
+      include: { role: true },
+    });
+  },
+
   updateUser: async (userId: string, input: UpdateUserDTO) => {
     return prisma.user.update({
       where: {
