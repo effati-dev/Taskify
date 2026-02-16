@@ -6,7 +6,11 @@ export const userResponseSchemas = {
     id: userCore.id,
     email: userCore.email,
     name: userCore.name,
-    role: z.object(roleCore),
+    role: z.object({
+      id: roleCore.id,
+      name: roleCore.name,
+      description: roleCore.description.optional().nullable(),
+    }),
   }),
 
   getManyUsers: z.array(

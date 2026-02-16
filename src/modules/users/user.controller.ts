@@ -15,7 +15,7 @@ export default {
     reply: FastifyReply,
   ) => {
     const body = request.body;
-    const userRoleId = (request.user as Record<string, any>).roleId;
+    const userRoleId = (request.user as Record<string, any>)?.roleId;
 
     const user = await userServices.registerUser(body, userRoleId);
     return reply.status(201).send(user);
