@@ -61,4 +61,28 @@ export default (app: FastifyInstance) => {
     },
     handler: userController.changePasswordHandler,
   });
+
+  app.route({
+    url: "/me",
+    method: "GET",
+    onRequest: app.authenticate,
+    schema: { response: { 200: userResponseSchemas.getUser } },
+    handler: userController.meHandler,
+  });
+
+  app.route({
+    url: "/me",
+    method: "PUT",
+    onRequest: app.authenticate,
+    schema: { response: { 200: userResponseSchemas.getUser } },
+    handler: userController.updateMeHandler,
+  });
+
+  app.route({
+    url: "/me/change-password",
+    method: "PUT",
+    onRequest: app.authenticate,
+    schema: { response: { 200: userResponseSchemas.getUser } },
+    handler: userController.changeMyPasswordHandler,
+  });
 };

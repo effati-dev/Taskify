@@ -42,15 +42,6 @@ export default {
     reply.clearCookie("refreshToken");
     return reply.status(204).send();
   },
-
-  meHandler: async (request: FastifyRequest, reply: FastifyReply) => {
-    const accessTokenData = (await request.accessJwtDecode()) as Record<
-      string,
-      any
-    >;
-    const user = await userService.getUserById(accessTokenData.user.id);
-    return reply.status(200).send(user);
-  },
 };
 
 const signTokens = async (reply: FastifyReply, user: User) => {

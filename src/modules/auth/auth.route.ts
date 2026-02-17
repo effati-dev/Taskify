@@ -28,12 +28,4 @@ export default (app: FastifyInstance) => {
     onRequest: app.authenticate,
     handler: authController.logoutHandler,
   });
-
-  app.route({
-    url: "/me",
-    method: "GET",
-    onRequest: app.authenticate,
-    schema: { response: { 200: userResponseSchemas.getUser } },
-    handler: authController.meHandler,
-  });
 };
