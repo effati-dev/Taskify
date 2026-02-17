@@ -13,10 +13,10 @@ const registerMiddlewares = (app: FastifyInstance) => {
   // User must be authorized as given role
   app.decorate(
     "authorize",
-    async (allowedRoles: string[]) =>
-      async (request: FastifyRequest, reply: FastifyReply) => {
+    (allowedRoles: string[]) =>
+      async (request: FastifyRequest, _reply: FastifyReply) => {
         const userRoles = (request.user as Record<string, any>)
-          .roles as string[];
+          .roleId as string[];
         let isAuthorized = false;
         allowedRoles.forEach((allowedRole) => {
           if (userRoles.includes(allowedRole)) {
@@ -25,7 +25,7 @@ const registerMiddlewares = (app: FastifyInstance) => {
           }
         });
         if (!isAuthorized)
-          throw new AppError(403, "FORBIDDEN", "Forbidden", "Acees Denied.");
+          throw new AppError(403, "FORBIDDEN", "Forbidden", "Acces Denied.");
       },
   );
 

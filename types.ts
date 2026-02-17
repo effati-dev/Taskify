@@ -13,6 +13,9 @@ declare module "fastify" {
       request: FastifyRequest,
       reply: FastifyReply,
     ) => Promise<void>;
+    authorize: (
+      allowedRoles: string[],
+    ) => (request: FastifyRequest, reply: FastifyReply) => Promise<void>;
   }
   interface FastifyRequest {
     accessJwtVerify: (

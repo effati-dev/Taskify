@@ -18,7 +18,7 @@ export default (app: FastifyInstance) => {
 
   app.route({
     url: "/",
-    onRequest: app.authenticate,
+    onRequest: [app.authenticate, app.authorize(["admin"])],
     method: "GET",
     schema: {
       querystring: userQuerySchemas.getManyUsers,
@@ -30,7 +30,7 @@ export default (app: FastifyInstance) => {
   app.route({
     url: "/:userId",
     method: "GET",
-    onRequest: app.authenticate,
+    onRequest: [app.authenticate, app.authorize(["admin"])],
     schema: {
       params: userParamSchemas.getUserById,
       response: { 200: userResponseSchemas.getUser },
@@ -41,7 +41,7 @@ export default (app: FastifyInstance) => {
   app.route({
     url: "/:userId",
     method: "PUT",
-    onRequest: app.authenticate,
+    onRequest: [app.authenticate, app.authorize(["admin"])],
     schema: {
       params: userParamSchemas.getUserById,
       body: userRequestSchemas.updateUser,
@@ -53,7 +53,7 @@ export default (app: FastifyInstance) => {
   app.route({
     url: "/:userId/change-password",
     method: "PUT",
-    onRequest: app.authenticate,
+    onRequest: [app.authenticate, app.authorize(["admin"])],
     schema: {
       params: userParamSchemas.getUserById,
       body: userRequestSchemas.changePassword,
