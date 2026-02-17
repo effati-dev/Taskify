@@ -6,13 +6,12 @@ export type RegisterUserDTO = {
 };
 
 export type UpdateUserDTO = {
-  userId: string;
-  email?: string;
-  name?: string;
+  email?: string | undefined;
+  name?: string | undefined;
+  roleId?: string | undefined;
 };
 
 export type ChangePasswordDTO = {
-  userId: string;
   oldPassword: string;
   newPassword: string;
 };
