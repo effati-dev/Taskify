@@ -76,11 +76,12 @@ export default {
   },
 
   updateUser: async (userId: string, input: UpdateUserDTO) => {
+    const { roleId: _roleId, ...rest } = input;
     return prisma.user.update({
       where: {
         id: userId,
       },
-      data: omitUndefined(input),
+      data: omitUndefined(rest),
       include: { role: true },
     });
   },

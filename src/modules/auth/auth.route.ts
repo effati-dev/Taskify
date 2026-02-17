@@ -2,7 +2,6 @@ import type { FastifyInstance } from "fastify";
 import authController from "./auth.controller";
 import { authRequestSchemas } from "./schemas/request";
 import { authResponseSchemas } from "./schemas/response";
-import { userResponseSchemas } from "../users/schemas/response";
 
 export default (app: FastifyInstance) => {
   app.route({
