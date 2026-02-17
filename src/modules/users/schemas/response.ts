@@ -9,7 +9,7 @@ export const userResponseSchemas = {
     role: z.object({
       id: roleCore.id,
       name: roleCore.name,
-      description: roleCore.description.optional().nullable(),
+      description: roleCore.description.optional(),
     }),
   }),
 

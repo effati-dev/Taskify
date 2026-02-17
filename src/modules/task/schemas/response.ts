@@ -5,7 +5,7 @@ export const taskResponseSchemas = {
   getTask: z.object({
     id: taskCore.id,
     title: taskCore.title,
-    description: taskCore.description.optional().nullable(),
+    description: taskCore.description.optional(),
     status: taskCore.status,
     userId: taskCore.userId,
     createdAt: taskCore.createdAt,
@@ -15,7 +15,7 @@ export const taskResponseSchemas = {
     z.object({
       id: taskCore.id,
       title: taskCore.title,
-      description: taskCore.description.optional().nullable(),
+      description: taskCore.description.optional(),
       status: taskCore.status,
       userId: taskCore.userId,
       createdAt: taskCore.createdAt,

@@ -7,7 +7,7 @@ export const taskCore = {
     .string({ error: "Invalid string type" })
     .uuid({ error: "Invalid UUID format" }),
   title: z.string({ error: "Invalid string type" }),
-  description: z.string({ error: "Invalid string type" }),
+  description: z.string({ error: "Invalid string type" }).nullable(),
   createdAt: z.date({ error: "Invalid date format" }),
   status: z.enum(["todo", "in_progress", "done"], {
     error: "can only be between todo, in_progress, done.",

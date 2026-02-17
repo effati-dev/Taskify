@@ -20,5 +20,5 @@ export const userCore = {
 export const roleCore = {
   id: z.string({ error: "Invalid string type" }),
   name: z.string({ error: "Invalid string type" }),
-  description: z.string({ error: "Invalid string type" }),
+  description: z.string({ error: "Invalid string type" }).nullable(),
 };
