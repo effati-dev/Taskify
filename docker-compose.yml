@@ -1,0 +1,53 @@
+version: "3.9"
+
+services:
+  app:
+    container_name: taskify
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - taskify
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/taskdb
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      ENABLE_SWAGGER: true
+      ACCESS_TOKEN_SECRET: ACCESS_TOKEN_SECRET
+      REFRESH_TOKEN_SECRET: REFRESH_TOKEN_SECRET
+      COOKIE_SECRET: COOKIE_SECRET
+
+      ADMIN_INITIAL_EMAIL: mohammd@gmail.com
+      ADMIN_INITIAL_PASSWORD: 123456
+
+      HASH_SALT_ROUNDS: 10
+    depends_on:
+      - db
+    command: sh -c "npm run migrate && npm run seed && npm start"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health-check"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  db:
+    container_name: taskify_db
+    image: postgres:alpine
+    restart: always
+    networks:
+      - taskify
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: taskifydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+networks:
+  taskify:
