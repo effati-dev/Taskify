@@ -1,5 +1,6 @@
 import { z } from "zod/v4";
 import { taskCore } from "./core";
+import { paginationMetaResponse } from "../../../common/schema";
 
 export const taskResponseSchemas = {
   getTask: z.object({
@@ -24,5 +25,6 @@ export const taskResponseSchemas = {
         createdAt: taskCore.createdAt,
       }),
     ),
+    meta: paginationMetaResponse,
   }),
 };

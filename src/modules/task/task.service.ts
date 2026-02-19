@@ -41,8 +41,11 @@ export default {
     const orderBy = buildOrderBy<TaskOrderByWithRelationInput>(query.sort, {
       createdAt: "desc",
     });
-
-    return prisma.task.findMany({ skip, take, where, orderBy });
+    const [tasks, count] = await prisma.$transaction([
+      prisma.task.findMany({ skip, take, where, orderBy }),
+      prisma.task.count({ where }),
+    ]);
+    return [tasks, count];
   },
 
   getTask: async (userId: string, taskId: string) => {

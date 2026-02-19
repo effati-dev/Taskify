@@ -20,8 +20,15 @@ export default {
     reply: FastifyReply,
   ) => {
     const userId = (request.user as Record<string, any>).id;
-    const tasks = await taskService.getAllTasks(userId, request.query);
-    return reply.status(200).send({ data: tasks });
+    const [tasks, total] = await taskService.getAllTasks(userId, request.query);
+    const { page, limit } = request.query;
+    const meta = {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil((total as number) / limit),
+    };
+    return reply.status(200).send({ data: tasks, meta });
   },
 
   getUserTaskHandler: async (
