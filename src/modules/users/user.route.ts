@@ -5,7 +5,7 @@ import { userResponseSchemas } from "./schemas/response";
 import { userParamSchemas } from "./schemas/params";
 import { userQuerySchemas } from "./schemas/query";
 
-export default (app: FastifyInstance) => {
+export default function (app: FastifyInstance) {
   app.route({
     url: "/",
     method: "POST",
@@ -116,4 +116,4 @@ export default (app: FastifyInstance) => {
     onRequest: app.authenticate,
     handler: userController.changeMyPasswordHandler,
   });
-};
+}

@@ -10,10 +10,10 @@ import type { GetUserByIdParam } from "./schemas/params";
 import type { GetManyUsersQuery } from "./schemas/query";
 
 export default {
-  registerUserHandler: async (
+  registerUserHandler: async function (
     request: FastifyRequest<{ Body: RegisterUserRequest }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const body = request.body;
     const userRoleId = (request.user as Record<string, any>)?.roleId;
 
@@ -21,10 +21,10 @@ export default {
     return reply.status(201).send(user);
   },
 
-  getAllUsersHandler: async (
+  getAllUsersHandler: async function (
     request: FastifyRequest<{ Querystring: GetManyUsersQuery }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const [users, total] = await userService.getAllUsers(request.query);
     const { page, limit } = request.query;
     const meta = {
@@ -36,21 +36,21 @@ export default {
     return reply.status(200).send({ data: users, meta });
   },
 
-  getUserByIdHandler: async (
+  getUserByIdHandler: async function (
     request: FastifyRequest<{ Params: GetUserByIdParam }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const user = await userService.getUserById(request.params.userId);
     return reply.status(200).send({ data: user });
   },
 
-  updateUserHandler: async (
+  updateUserHandler: async function (
     request: FastifyRequest<{
       Params: GetUserByIdParam;
       Body: UpdateUserRequest;
     }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const user = await userService.updateUser(
       request.params.userId,
       request.body as UpdateUserDTO,
@@ -58,13 +58,13 @@ export default {
     return reply.status(200).send({ data: user });
   },
 
-  changePasswordHandler: async (
+  changePasswordHandler: async function (
     request: FastifyRequest<{
       Params: GetUserByIdParam;
       Body: ChangePasswordRequest;
     }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const user = await userService.changePassword(
       request.params.userId,
       request.body as ChangePasswordDTO,
@@ -72,25 +72,25 @@ export default {
     return reply.status(200).send({ data: user });
   },
 
-  meHandler: async (request: FastifyRequest, reply: FastifyReply) => {
+  meHandler: async function (request: FastifyRequest, reply: FastifyReply) {
     const userId = (request.user as Record<string, any>).id;
     const user = await userService.getUserById(userId);
     return reply.status(200).send({ data: user });
   },
 
-  updateMeHandler: async (
+  updateMeHandler: async function (
     request: FastifyRequest<{ Body: UpdateUserRequest }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const userId = (request.user as Record<string, any>).id;
     const user = await userService.updateUser(userId, request.body);
     return reply.status(200).send({ data: user });
   },
 
-  changeMyPasswordHandler: async (
+  changeMyPasswordHandler: async function (
     request: FastifyRequest<{ Body: ChangePasswordDTO }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const userId = (request.user as Record<string, any>).id;
     const user = await userService.changePassword(userId, request.body);
     return reply.status(200).send({ data: user });

@@ -5,7 +5,7 @@ const requiredEnvVars = [
   "COOKIE_SECRET",
 ] as const;
 
-const validateRequiredEnvVars = () => {
+export function validateRequiredEnvVars() {
   const missing = requiredEnvVars.filter((varName) => !process.env[varName]);
 
   if (missing.length > 0) {
@@ -13,7 +13,7 @@ const validateRequiredEnvVars = () => {
       `Missing required environment variables: ${missing.join(", ")}`,
     );
   }
-};
+}
 
 export default {
   HOSTNAME: process.env.HOSTNAME || "localhost",
@@ -28,5 +28,3 @@ export default {
   ADMIN_INITIAL_PASSWORD: process.env.ADMIN_INITIAL_PASSWORD || "",
   ENABLE_SWAGGER: process.env.ENABLE_SWAGGER === "true",
 } as const;
-
-export { validateRequiredEnvVars };

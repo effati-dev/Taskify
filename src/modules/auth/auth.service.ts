@@ -5,7 +5,7 @@ import userService from "../users/user.service";
 import type { LoginDTO } from "./auth.dto";
 
 export default {
-  verifyLogin: async (input: LoginDTO) => {
+  verifyLogin: async function (input: LoginDTO) {
     const user = await userService.getUserByEmail(input.email);
 
     if (!user) {

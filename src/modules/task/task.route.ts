@@ -6,7 +6,7 @@ import { taskParamSchemas } from "./schemas/params";
 import { taskQuerySchemas } from "./schemas/query";
 import { nullSchema } from "../../common/schema";
 
-export default (app: FastifyInstance) => {
+export default function (app: FastifyInstance) {
   app.route({
     url: "/",
     method: "GET",
@@ -77,4 +77,4 @@ export default (app: FastifyInstance) => {
     onRequest: app.authenticate,
     handler: taskController.deleteTask,
   });
-};
+}

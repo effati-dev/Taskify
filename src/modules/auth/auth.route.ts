@@ -4,7 +4,7 @@ import { authRequestSchemas } from "./schemas/request";
 import { authResponseSchemas } from "./schemas/response";
 import { nullSchema } from "../../common/schema";
 
-export default (app: FastifyInstance) => {
+export default function (app: FastifyInstance) {
   app.route({
     url: "/login",
     method: "POST",
@@ -40,4 +40,4 @@ export default (app: FastifyInstance) => {
     onRequest: app.authenticate,
     handler: authController.logoutHandler,
   });
-};
+}

@@ -13,11 +13,11 @@ import type {
 } from "./task.dto";
 
 export default {
-  createTask: async (userId: string, input: CreateTaskDTO) => {
+  createTask: async function (userId: string, input: CreateTaskDTO) {
     return prisma.task.create({ data: { ...omitUndefined(input), userId } });
   },
 
-  getAllTasks: async (userId: string, query: GetAllTasksQueryDTO) => {
+  getAllTasks: async function (userId: string, query: GetAllTasksQueryDTO) {
     const { skip, take } = buildPagination(query.page, query.limit);
     const status = query.status;
 
@@ -48,14 +48,18 @@ export default {
     return [tasks, count];
   },
 
-  getTask: async (userId: string, taskId: string) => {
+  getTask: async function (userId: string, taskId: string) {
     const task = await prisma.task.findUniqueOrThrow({ where: { id: taskId } });
     if (task.userId !== userId)
       throw new AppError(403, "FORBIDDEN", "Forbidden", "Access denied.");
     return task;
   },
 
-  updateTask: async (userId: string, taskId: string, input: UpdateTaskDTO) => {
+  updateTask: async function (
+    userId: string,
+    taskId: string,
+    input: UpdateTaskDTO,
+  ) {
     const task = await prisma.task.findUniqueOrThrow({ where: { id: taskId } });
     if (task.userId !== userId)
       throw new AppError(403, "FORBIDDEN", "Forbidden", "Access denied.");
@@ -65,7 +69,7 @@ export default {
     });
   },
 
-  deleteTask: async (userId: string, taskId: string) => {
+  deleteTask: async function (userId: string, taskId: string) {
     const task = await prisma.task.findUniqueOrThrow({ where: { id: taskId } });
     if (task.userId !== userId)
       throw new AppError(403, "FORBIDDEN", "Forbidden", "Access denied.");

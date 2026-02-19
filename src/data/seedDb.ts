@@ -16,7 +16,7 @@ const users = [
   },
 ];
 
-const seed = async () => {
+async function seed() {
   try {
     const createdRoles: Record<any, any>[] = [];
     for (const role of roles) {
@@ -39,6 +39,6 @@ const seed = async () => {
     console.error(err);
     process.exit(1);
   }
-};
+}
 
 seed();

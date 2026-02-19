@@ -16,7 +16,7 @@ import { buildOrderBy } from "../../utils/sort";
 import { buildPagination } from "../../utils/pagination";
 
 export default {
-  registerUser: async (input: RegisterUserDTO, userRoleId?: string) => {
+  registerUser: async function (input: RegisterUserDTO, userRoleId?: string) {
     const { roleId, password, ...rest } = input;
 
     // Only admins are allowed to set roleId
@@ -33,7 +33,7 @@ export default {
     return user;
   },
 
-  getAllUsers: async (query: GetAllUsersQueryDTO) => {
+  getAllUsers: async function (query: GetAllUsersQueryDTO) {
     const { skip, take } = buildPagination(query.page, query.limit);
     // Use search field to search in names and emails
     const where: UserWhereInput = {
@@ -61,7 +61,7 @@ export default {
     return [users, count];
   },
 
-  getUserById: async (userId: string) => {
+  getUserById: async function (userId: string) {
     return prisma.user.findUniqueOrThrow({
       where: {
         id: userId,
@@ -70,7 +70,7 @@ export default {
     });
   },
 
-  getUserByEmail: async (email: string) => {
+  getUserByEmail: async function (email: string) {
     return prisma.user.findUnique({
       where: {
         email,
@@ -79,7 +79,7 @@ export default {
     });
   },
 
-  updateUser: async (userId: string, input: UpdateUserDTO) => {
+  updateUser: async function (userId: string, input: UpdateUserDTO) {
     const { roleId: _roleId, ...rest } = input;
     return prisma.user.update({
       where: {
@@ -90,7 +90,7 @@ export default {
     });
   },
 
-  changePassword: async (userId: string, input: ChangePasswordDTO) => {
+  changePassword: async function (userId: string, input: ChangePasswordDTO) {
     const user = await prisma.user.findUniqueOrThrow({
       where: {
         id: userId,

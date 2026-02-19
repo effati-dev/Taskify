@@ -12,7 +12,7 @@ import registerServices from "./app/services";
 import registerMiddlewares from "./app/middlewares";
 import registerSwagger from "./app/swagger";
 
-export const app = fastify({ logger: true });
+const app = fastify({ logger: true });
 
 app.withTypeProvider<ZodTypeProvider>();
 
@@ -28,7 +28,7 @@ if (env.ENABLE_SWAGGER) registerSwagger(app);
 
 registerRoutes(app);
 
-const start = async () => {
+async function start() {
   try {
     validateRequiredEnvVars();
     await app.listen({ host: env.HOSTNAME, port: env.PORT });
@@ -37,6 +37,6 @@ const start = async () => {
     console.error(err);
     process.exit(1);
   }
-};
+}
 
 start();

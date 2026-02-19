@@ -1,7 +1,4 @@
-export const buildOrderBy = <T>(
-  sort: string | undefined,
-  defaultOrder: T,
-): T => {
+export function buildOrderBy<T>(sort: string | undefined, defaultOrder: T): T {
   if (!sort) return defaultOrder;
 
   const [field, direction] = sort.split("_");
@@ -11,4 +8,4 @@ export const buildOrderBy = <T>(
   return {
     [field]: direction,
   } as T;
-};
+}

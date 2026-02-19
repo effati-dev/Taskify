@@ -5,20 +5,20 @@ import type { GetTaskById } from "./schemas/params";
 import type { GetManyTasksQuery } from "./schemas/query";
 
 export default {
-  createHandler: async (
+  createHandler: async function (
     request: FastifyRequest<{ Body: CreateTask }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const body = request.body;
     const userId = (request.user as Record<string, any>).id;
     const task = await taskService.createTask(userId, body);
     return reply.status(201).send({ data: task });
   },
 
-  getUserAllTasksHandler: async (
+  getUserAllTasksHandler: async function (
     request: FastifyRequest<{ Querystring: GetManyTasksQuery }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const userId = (request.user as Record<string, any>).id;
     const [tasks, total] = await taskService.getAllTasks(userId, request.query);
     const { page, limit } = request.query;
@@ -31,20 +31,20 @@ export default {
     return reply.status(200).send({ data: tasks, meta });
   },
 
-  getUserTaskHandler: async (
+  getUserTaskHandler: async function (
     request: FastifyRequest<{ Params: GetTaskById }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const userId = (request.user as Record<string, any>).id;
     const taskId = request.params.taskId;
     const task = await taskService.getTask(userId, taskId);
     return reply.status(200).send({ data: task });
   },
 
-  updateTask: async (
+  updateTask: async function (
     request: FastifyRequest<{ Body: UpdateTask; Params: GetTaskById }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const userId = (request.user as Record<string, any>).id;
     const taskId = request.params.taskId;
     const body = request.body;
@@ -52,10 +52,10 @@ export default {
     return reply.status(200).send({ data: task });
   },
 
-  deleteTask: async (
+  deleteTask: async function (
     request: FastifyRequest<{ Params: GetTaskById }>,
     reply: FastifyReply,
-  ) => {
+  ) {
     const userId = (request.user as Record<string, any>).id;
     const taskId = request.params.taskId;
     await taskService.deleteTask(userId, taskId);

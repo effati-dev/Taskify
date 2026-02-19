@@ -3,7 +3,7 @@ import swagger from "@fastify/swagger";
 import swaggerUi from "@fastify/swagger-ui";
 import { jsonSchemaTransform } from "fastify-type-provider-zod";
 
-const registerSwagger = (app: FastifyInstance) => {
+function registerSwagger(app: FastifyInstance) {
   app.register(swagger, {
     transform: jsonSchemaTransform,
     openapi: {
@@ -24,6 +24,6 @@ const registerSwagger = (app: FastifyInstance) => {
     },
   });
   app.register(swaggerUi, { routePrefix: "/docs" });
-};
+}
 
 export default registerSwagger;

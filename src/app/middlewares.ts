@@ -1,7 +1,7 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { AppError } from "../errors/AppError";
 
-const registerMiddlewares = (app: FastifyInstance) => {
+function registerMiddlewares(app: FastifyInstance) {
   // User must be authenticated
   app.decorate(
     "authenticate",
@@ -47,6 +47,6 @@ const registerMiddlewares = (app: FastifyInstance) => {
       }
     },
   );
-};
+}
 
 export default registerMiddlewares;

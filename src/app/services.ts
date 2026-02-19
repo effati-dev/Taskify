@@ -4,7 +4,7 @@ import fastifyJwt from "@fastify/jwt";
 import fastifyCookie from "@fastify/cookie";
 import env from "../env";
 
-const registerServices = (app: FastifyInstance) => {
+function registerServices(app: FastifyInstance) {
   app.register(cors, {
     origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
@@ -33,6 +33,6 @@ const registerServices = (app: FastifyInstance) => {
   app.register(fastifyCookie, {
     secret: env.COOKIE_SECRET,
   });
-};
+}
 
 export default registerServices;

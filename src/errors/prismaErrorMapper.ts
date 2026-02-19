@@ -1,7 +1,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 import errorCodes from "./errorCodes";
 import type { ResponseError } from "./ResponseError";
-export default (err: PrismaClientKnownRequestError): ResponseError => {
+export default function (err: PrismaClientKnownRequestError): ResponseError {
   switch (err.code) {
     case "P2002": {
       const fields = (err.meta as any)?.driverAdapterError?.cause?.constraint
@@ -41,4 +41,4 @@ export default (err: PrismaClientKnownRequestError): ResponseError => {
         message: "Database error occurred",
       };
   }
-};
+}
