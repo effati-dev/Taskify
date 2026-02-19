@@ -29,7 +29,6 @@ export default {
       },
       include: { role: true },
     });
-    console.log(user);
     return user;
   },
 
