@@ -9,6 +9,8 @@ export default (app: FastifyInstance) => {
     url: "/login",
     method: "POST",
     schema: {
+      tags: ["Auth"],
+      summary: "Login with email and password",
       body: authRequestSchemas.login,
       response: { 200: authResponseSchemas.login },
     },
@@ -18,7 +20,11 @@ export default (app: FastifyInstance) => {
   app.route({
     url: "/refresh-token",
     method: "POST",
-    schema: { response: { 200: authResponseSchemas.login } },
+    schema: {
+      tags: ["Auth"],
+      summary: "Refresh both tokens",
+      response: { 200: authResponseSchemas.login },
+    },
     handler: authController.refreshHandler,
   });
 
@@ -26,6 +32,8 @@ export default (app: FastifyInstance) => {
     url: "/logout",
     method: "GET",
     schema: {
+      tags: ["Auth"],
+      summary: "Delete refresh token from cookie",
       security: [{ bearerAuth: [] }],
       response: { 204: nullSchema },
     },
