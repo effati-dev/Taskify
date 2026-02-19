@@ -10,6 +10,7 @@ export default (app: FastifyInstance) => {
     url: "/",
     method: "POST",
     schema: {
+      security: [{ bearerAuth: [] }],
       body: taskRequestSchemas.createTask,
       response: { 201: taskResponseSchemas.getTask },
     },
@@ -21,6 +22,7 @@ export default (app: FastifyInstance) => {
     url: "/",
     method: "GET",
     schema: {
+      security: [{ bearerAuth: [] }],
       querystring: taskQuerySchemas.getManyTasks,
       response: { 200: taskResponseSchemas.getManyTasks },
     },
@@ -32,6 +34,7 @@ export default (app: FastifyInstance) => {
     url: "/:taskId",
     method: "GET",
     schema: {
+      security: [{ bearerAuth: [] }],
       params: taskParamSchemas.getTaskById,
       response: { 200: taskResponseSchemas.getTask },
     },
@@ -43,6 +46,7 @@ export default (app: FastifyInstance) => {
     url: "/:taskId",
     method: "PUT",
     schema: {
+      security: [{ bearerAuth: [] }],
       params: taskParamSchemas.getTaskById,
       body: taskRequestSchemas.upadteTask,
       response: { 200: taskResponseSchemas.getTask },
@@ -55,6 +59,7 @@ export default (app: FastifyInstance) => {
     url: "/:taskId",
     method: "DELETE",
     schema: {
+      security: [{ bearerAuth: [] }],
       params: taskParamSchemas.getTaskById,
     },
     onRequest: app.authenticate,

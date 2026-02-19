@@ -18,77 +18,86 @@ export default (app: FastifyInstance) => {
 
   app.route({
     url: "/",
-    onRequest: [app.authenticate, app.authorize(["admin"])],
     method: "GET",
     schema: {
+      security: [{ bearerAuth: [] }],
       querystring: userQuerySchemas.getManyUsers,
       response: { 200: userResponseSchemas.getManyUsers },
     },
+    onRequest: [app.authenticate, app.authorize(["admin"])],
     handler: userController.getAllUsersHandler,
   });
 
   app.route({
     url: "/:userId",
     method: "GET",
-    onRequest: [app.authenticate, app.authorize(["admin"])],
     schema: {
+      security: [{ bearerAuth: [] }],
       params: userParamSchemas.getUserById,
       response: { 200: userResponseSchemas.getUser },
     },
+    onRequest: [app.authenticate, app.authorize(["admin"])],
     handler: userController.getUserByIdHandler,
   });
 
   app.route({
     url: "/:userId",
     method: "PUT",
-    onRequest: [app.authenticate, app.authorize(["admin"])],
     schema: {
+      security: [{ bearerAuth: [] }],
       params: userParamSchemas.getUserById,
       body: userRequestSchemas.updateUser,
       response: { 200: userResponseSchemas.getUser },
     },
+    onRequest: [app.authenticate, app.authorize(["admin"])],
     handler: userController.updateUserHandler,
   });
 
   app.route({
     url: "/:userId/change-password",
     method: "PUT",
-    onRequest: [app.authenticate, app.authorize(["admin"])],
     schema: {
+      security: [{ bearerAuth: [] }],
       params: userParamSchemas.getUserById,
       body: userRequestSchemas.changePassword,
       response: { 200: userResponseSchemas.getUser },
     },
+    onRequest: [app.authenticate, app.authorize(["admin"])],
     handler: userController.changePasswordHandler,
   });
 
   app.route({
     url: "/me",
     method: "GET",
+    schema: {
+      security: [{ bearerAuth: [] }],
+      response: { 200: userResponseSchemas.getUser },
+    },
     onRequest: app.authenticate,
-    schema: { response: { 200: userResponseSchemas.getUser } },
     handler: userController.meHandler,
   });
 
   app.route({
     url: "/me",
     method: "PUT",
-    onRequest: app.authenticate,
     schema: {
+      security: [{ bearerAuth: [] }],
       body: userRequestSchemas.updateUser,
       response: { 200: userResponseSchemas.getUser },
     },
+    onRequest: app.authenticate,
     handler: userController.updateMeHandler,
   });
 
   app.route({
     url: "/me/change-password",
     method: "PUT",
-    onRequest: app.authenticate,
     schema: {
+      security: [{ bearerAuth: [] }],
       body: userRequestSchemas.changePassword,
       response: { 200: userResponseSchemas.getUser },
     },
+    onRequest: app.authenticate,
     handler: userController.changeMyPasswordHandler,
   });
 };

@@ -24,6 +24,9 @@ export default (app: FastifyInstance) => {
   app.route({
     url: "/logout",
     method: "GET",
+    schema: {
+      security: [{ bearerAuth: [] }],
+    },
     onRequest: app.authenticate,
     handler: authController.logoutHandler,
   });

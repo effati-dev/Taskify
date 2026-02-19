@@ -12,6 +12,15 @@ const registerSwagger = (app: FastifyInstance) => {
         description: "Task management API documentation",
         version: "1.0.0",
       },
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: "http",
+            scheme: "bearer",
+            bearerFormat: "JWT",
+          },
+        },
+      },
     },
   });
   app.register(swaggerUi, { routePrefix: "/docs" });
