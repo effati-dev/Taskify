@@ -1,5 +1,6 @@
 import z from "zod";
 import { roleCore, userCore } from "./core";
+import { paginationMetaResponse } from "../../../common/schema";
 
 export const userResponseSchemas = {
   getUser: z.object({
@@ -24,6 +25,7 @@ export const userResponseSchemas = {
         roleId: userCore.roleId,
       }),
     ),
+    meta: paginationMetaResponse,
   }),
 };
 
