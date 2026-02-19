@@ -1,0 +1,9 @@
+.git
+*Dockerfile*
+*dockerfile*
+*docker-compose*
+.env
+node_modules
+package-lock.json
+.env-example
+TODO.*
