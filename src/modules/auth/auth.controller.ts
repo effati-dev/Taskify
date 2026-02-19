@@ -17,7 +17,8 @@ export default {
     const { accessToken, refreshToken } = await signTokens(reply, user);
 
     setRefreshToken(reply, refreshToken);
-    return reply.status(200).send({ accessToken, user });
+    console.log({ data: { accessToken, user } });
+    return reply.status(200).send({ data: { accessToken, user } });
   },
 
   refreshHandler: async (request: FastifyRequest, reply: FastifyReply) => {
@@ -35,7 +36,7 @@ export default {
     const user = await userService.getUserById(refreshTokenData.userId);
     const { accessToken, refreshToken } = await signTokens(reply, user);
     setRefreshToken(reply, refreshToken);
-    return reply.status(200).send({ accessToken, user });
+    return reply.status(200).send({ data: { accessToken, user } });
   },
 
   logoutHandler: (_request: FastifyRequest, reply: FastifyReply) => {

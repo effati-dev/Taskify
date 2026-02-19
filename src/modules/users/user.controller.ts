@@ -25,8 +25,15 @@ export default {
     request: FastifyRequest<{ Querystring: GetManyUsersQuery }>,
     reply: FastifyReply,
   ) => {
-    const users = await userService.getAllUsers(request.query);
-    return reply.status(200).send(users);
+    const [users, total] = await userService.getAllUsers(request.query);
+    const { page, limit } = request.query;
+    const meta = {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil((total as number) / limit),
+    };
+    return reply.status(200).send({ data: users, meta });
   },
 
   getUserByIdHandler: async (
@@ -34,7 +41,7 @@ export default {
     reply: FastifyReply,
   ) => {
     const user = await userService.getUserById(request.params.userId);
-    return reply.status(200).send(user);
+    return reply.status(200).send({ data: user });
   },
 
   updateUserHandler: async (
@@ -48,7 +55,7 @@ export default {
       request.params.userId,
       request.body as UpdateUserDTO,
     );
-    return reply.status(200).send(user);
+    return reply.status(200).send({ data: user });
   },
 
   changePasswordHandler: async (
@@ -62,7 +69,7 @@ export default {
       request.params.userId,
       request.body as ChangePasswordDTO,
     );
-    return reply.status(200).send(user);
+    return reply.status(200).send({ data: user });
   },
 
   meHandler: async (request: FastifyRequest, reply: FastifyReply) => {
@@ -77,7 +84,7 @@ export default {
   ) => {
     const userId = (request.user as Record<string, any>).id;
     const user = await userService.updateUser(userId, request.body);
-    return reply.status(200).send(user);
+    return reply.status(200).send({ data: user });
   },
 
   changeMyPasswordHandler: async (
@@ -86,6 +93,6 @@ export default {
   ) => {
     const userId = (request.user as Record<string, any>).id;
     const user = await userService.changePassword(userId, request.body);
-    return reply.status(200).send(user);
+    return reply.status(200).send({ data: user });
   },
 };

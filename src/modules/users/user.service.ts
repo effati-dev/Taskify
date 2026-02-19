@@ -48,13 +48,17 @@ export default {
     const orderBy = buildOrderBy<UserOrderByWithRelationInput>(query.sort, {
       createdAt: "desc",
     });
+    const [users, count] = await prisma.$transaction([
+      prisma.user.findMany({
+        skip,
+        take,
+        where,
+        orderBy,
+      }),
+      prisma.user.count(),
+    ]);
 
-    return prisma.user.findMany({
-      skip,
-      take,
-      where,
-      orderBy,
-    });
+    return [users, count];
   },
 
   getUserById: async (userId: string) => {

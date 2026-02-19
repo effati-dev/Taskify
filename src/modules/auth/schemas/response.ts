@@ -3,8 +3,10 @@ import { userResponseSchemas } from "../../users/schemas/response";
 
 export const authResponseSchemas = {
   login: z.object({
-    accessToken: z.string(),
-    user: userResponseSchemas.getUser,
+    data: z.object({
+      user: userResponseSchemas.getUser.shape.data,
+      accessToken: z.string(),
+    }),
   }),
 };
 

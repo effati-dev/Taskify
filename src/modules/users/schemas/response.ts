@@ -3,24 +3,28 @@ import { roleCore, userCore } from "./core";
 
 export const userResponseSchemas = {
   getUser: z.object({
-    id: userCore.id,
-    email: userCore.email,
-    name: userCore.name,
-    role: z.object({
-      id: roleCore.id,
-      name: roleCore.name,
-      description: roleCore.description.optional(),
-    }),
-  }),
-
-  getManyUsers: z.array(
-    z.object({
+    data: z.object({
       id: userCore.id,
       email: userCore.email,
       name: userCore.name,
-      roleId: userCore.roleId,
+      role: z.object({
+        id: roleCore.id,
+        name: roleCore.name,
+        description: roleCore.description.optional(),
+      }),
     }),
-  ),
+  }),
+
+  getManyUsers: z.object({
+    data: z.array(
+      z.object({
+        id: userCore.id,
+        email: userCore.email,
+        name: userCore.name,
+        roleId: userCore.roleId,
+      }),
+    ),
+  }),
 };
 
 export type GetUserResponse = z.infer<typeof userResponseSchemas.getUser>;
