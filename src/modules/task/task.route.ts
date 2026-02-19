@@ -9,20 +9,10 @@ import { nullSchema } from "../../common/schema";
 export default (app: FastifyInstance) => {
   app.route({
     url: "/",
-    method: "POST",
-    schema: {
-      security: [{ bearerAuth: [] }],
-      body: taskRequestSchemas.createTask,
-      response: { 201: taskResponseSchemas.getTask },
-    },
-    onRequest: app.authenticate,
-    handler: taskController.createHandler,
-  });
-
-  app.route({
-    url: "/",
     method: "GET",
     schema: {
+      tags: ["Tasks"],
+      summary: "Get all user's task",
       security: [{ bearerAuth: [] }],
       querystring: taskQuerySchemas.getManyTasks,
       response: { 200: taskResponseSchemas.getManyTasks },
@@ -32,9 +22,25 @@ export default (app: FastifyInstance) => {
   });
 
   app.route({
+    url: "/",
+    method: "POST",
+    schema: {
+      tags: ["Tasks"],
+      summary: "Create new task",
+      security: [{ bearerAuth: [] }],
+      body: taskRequestSchemas.createTask,
+      response: { 201: taskResponseSchemas.getTask },
+    },
+    onRequest: app.authenticate,
+    handler: taskController.createHandler,
+  });
+
+  app.route({
     url: "/:taskId",
     method: "GET",
     schema: {
+      tags: ["Tasks"],
+      summary: "Get a single user task",
       security: [{ bearerAuth: [] }],
       params: taskParamSchemas.getTaskById,
       response: { 200: taskResponseSchemas.getTask },
@@ -47,6 +53,8 @@ export default (app: FastifyInstance) => {
     url: "/:taskId",
     method: "PUT",
     schema: {
+      tags: ["Tasks"],
+      summary: "Update a single user task",
       security: [{ bearerAuth: [] }],
       params: taskParamSchemas.getTaskById,
       body: taskRequestSchemas.upadteTask,
@@ -60,6 +68,8 @@ export default (app: FastifyInstance) => {
     url: "/:taskId",
     method: "DELETE",
     schema: {
+      tags: ["Tasks"],
+      summary: "Delete a single user task",
       security: [{ bearerAuth: [] }],
       params: taskParamSchemas.getTaskById,
       response: { 204: nullSchema },
