@@ -75,7 +75,7 @@ export default {
   meHandler: async (request: FastifyRequest, reply: FastifyReply) => {
     const userId = (request.user as Record<string, any>).id;
     const user = await userService.getUserById(userId);
-    return reply.status(200).send(user);
+    return reply.status(200).send({ data: user });
   },
 
   updateMeHandler: async (
