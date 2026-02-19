@@ -55,7 +55,7 @@ export default {
         where,
         orderBy,
       }),
-      prisma.user.count(),
+      prisma.user.count({ where }),
     ]);
 
     return [users, count];
