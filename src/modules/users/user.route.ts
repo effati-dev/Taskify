@@ -10,6 +10,8 @@ export default (app: FastifyInstance) => {
     url: "/",
     method: "POST",
     schema: {
+      tags: ["Users"],
+      summary: "Register new user",
       body: userRequestSchemas.registerUser,
       response: { 201: userResponseSchemas.getUser },
     },
@@ -20,6 +22,8 @@ export default (app: FastifyInstance) => {
     url: "/",
     method: "GET",
     schema: {
+      tags: ["Users"],
+      summary: "Get all users",
       security: [{ bearerAuth: [] }],
       querystring: userQuerySchemas.getManyUsers,
       response: { 200: userResponseSchemas.getManyUsers },
@@ -32,6 +36,8 @@ export default (app: FastifyInstance) => {
     url: "/:userId",
     method: "GET",
     schema: {
+      tags: ["Users"],
+      summary: "Get a single user",
       security: [{ bearerAuth: [] }],
       params: userParamSchemas.getUserById,
       response: { 200: userResponseSchemas.getUser },
@@ -44,6 +50,8 @@ export default (app: FastifyInstance) => {
     url: "/:userId",
     method: "PUT",
     schema: {
+      tags: ["Users"],
+      summary: "Update a single user",
       security: [{ bearerAuth: [] }],
       params: userParamSchemas.getUserById,
       body: userRequestSchemas.updateUser,
@@ -57,6 +65,8 @@ export default (app: FastifyInstance) => {
     url: "/:userId/change-password",
     method: "PUT",
     schema: {
+      tags: ["Users"],
+      summary: "Change a single user's password",
       security: [{ bearerAuth: [] }],
       params: userParamSchemas.getUserById,
       body: userRequestSchemas.changePassword,
@@ -70,6 +80,8 @@ export default (app: FastifyInstance) => {
     url: "/me",
     method: "GET",
     schema: {
+      tags: ["Users"],
+      summary: "Get user's himself (by id in access token)",
       security: [{ bearerAuth: [] }],
       response: { 200: userResponseSchemas.getUser },
     },
@@ -81,6 +93,8 @@ export default (app: FastifyInstance) => {
     url: "/me",
     method: "PUT",
     schema: {
+      tags: ["Users"],
+      summary: "Update user's himself (by id in access token)",
       security: [{ bearerAuth: [] }],
       body: userRequestSchemas.updateUser,
       response: { 200: userResponseSchemas.getUser },
@@ -93,6 +107,8 @@ export default (app: FastifyInstance) => {
     url: "/me/change-password",
     method: "PUT",
     schema: {
+      tags: ["Users"],
+      summary: "Change user's own password (by id in access token)",
       security: [{ bearerAuth: [] }],
       body: userRequestSchemas.changePassword,
       response: { 200: userResponseSchemas.getUser },
