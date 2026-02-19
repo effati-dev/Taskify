@@ -26,6 +26,7 @@ export default {
   NODE_ENV: process.env.NODE_ENV || "production",
   ADMIN_INITIAL_EMAIL: process.env.ADMIN_INITIAL_EMAIL || "",
   ADMIN_INITIAL_PASSWORD: process.env.ADMIN_INITIAL_PASSWORD || "",
+  ENABLE_SWAGGER: process.env.ENABLE_SWAGGER === "true",
 } as const;
 
 export { validateRequiredEnvVars };

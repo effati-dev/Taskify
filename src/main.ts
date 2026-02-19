@@ -24,7 +24,7 @@ registerServices(app);
 
 registerMiddlewares(app);
 
-registerSwagger(app);
+if (env.ENABLE_SWAGGER) registerSwagger(app);
 
 registerRoutes(app);
 
