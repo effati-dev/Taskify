@@ -4,6 +4,7 @@ import { taskRequestSchemas } from "./schemas/request";
 import { taskResponseSchemas } from "./schemas/response";
 import { taskParamSchemas } from "./schemas/params";
 import { taskQuerySchemas } from "./schemas/query";
+import { nullSchema } from "../../common/schema";
 
 export default (app: FastifyInstance) => {
   app.route({
@@ -61,6 +62,7 @@ export default (app: FastifyInstance) => {
     schema: {
       security: [{ bearerAuth: [] }],
       params: taskParamSchemas.getTaskById,
+      response: { 204: nullSchema },
     },
     onRequest: app.authenticate,
     handler: taskController.deleteTask,

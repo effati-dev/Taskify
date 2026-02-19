@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import authController from "./auth.controller";
 import { authRequestSchemas } from "./schemas/request";
 import { authResponseSchemas } from "./schemas/response";
+import { nullSchema } from "../../common/schema";
 
 export default (app: FastifyInstance) => {
   app.route({
@@ -26,6 +27,7 @@ export default (app: FastifyInstance) => {
     method: "GET",
     schema: {
       security: [{ bearerAuth: [] }],
+      response: { 204: nullSchema },
     },
     onRequest: app.authenticate,
     handler: authController.logoutHandler,

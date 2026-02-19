@@ -28,3 +28,5 @@ export const paginationRequest = z.object({
     .max(100, { error: "Could not be more than 100" })
     .default(10),
 });
+
+export const nullSchema = z.null();
