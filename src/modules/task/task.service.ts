@@ -6,10 +6,14 @@ import type {
 } from "../../generated/prisma/models";
 import { buildPagination } from "../../utils/pagination";
 import { buildOrderBy } from "../../utils/sort";
-import type { CreateTask, GetAllTasksQueryDTO, UpdateTask } from "./task.dto";
+import type {
+  CreateTaskDTO,
+  GetAllTasksQueryDTO,
+  UpdateTaskDTO,
+} from "./task.dto";
 
 export default {
-  createTask: async (userId: string, input: CreateTask) => {
+  createTask: async (userId: string, input: CreateTaskDTO) => {
     return prisma.task.create({ data: { ...omitUndefined(input), userId } });
   },
 
@@ -48,7 +52,7 @@ export default {
     return task;
   },
 
-  updateTask: async (userId: string, taskId: string, input: UpdateTask) => {
+  updateTask: async (userId: string, taskId: string, input: UpdateTaskDTO) => {
     const task = await prisma.task.findUniqueOrThrow({ where: { id: taskId } });
     if (task.userId !== userId)
       throw new AppError(403, "FORBIDDEN", "Forbidden", "Access denied.");

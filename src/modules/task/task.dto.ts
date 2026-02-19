@@ -1,13 +1,13 @@
-export type CreateTask = {
+export type CreateTaskDTO = {
   title: string;
   status: "todo" | "in_progress" | "done";
-  description?: string | undefined;
+  description?: string | undefined | null;
 };
 
-export type UpdateTask = {
-  title?: string;
-  status?: "todo" | "in_progress" | "done";
-  description?: string | undefined;
+export type UpdateTaskDTO = {
+  title?: string | undefined;
+  status?: "todo" | "in_progress" | "done" | undefined;
+  description?: string | undefined | null;
 };
 
 export type GetAllTasksQueryDTO = {

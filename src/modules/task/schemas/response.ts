@@ -3,16 +3,7 @@ import { taskCore } from "./core";
 
 export const taskResponseSchemas = {
   getTask: z.object({
-    id: taskCore.id,
-    title: taskCore.title,
-    description: taskCore.description.optional(),
-    status: taskCore.status,
-    userId: taskCore.userId,
-    createdAt: taskCore.createdAt,
-  }),
-
-  getManyTasks: z.array(
-    z.object({
+    data: z.object({
       id: taskCore.id,
       title: taskCore.title,
       description: taskCore.description.optional(),
@@ -20,5 +11,18 @@ export const taskResponseSchemas = {
       userId: taskCore.userId,
       createdAt: taskCore.createdAt,
     }),
-  ),
+  }),
+
+  getManyTasks: z.object({
+    data: z.array(
+      z.object({
+        id: taskCore.id,
+        title: taskCore.title,
+        description: taskCore.description.optional(),
+        status: taskCore.status,
+        userId: taskCore.userId,
+        createdAt: taskCore.createdAt,
+      }),
+    ),
+  }),
 };

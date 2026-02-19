@@ -17,7 +17,6 @@ export default {
     const { accessToken, refreshToken } = await signTokens(reply, user);
 
     setRefreshToken(reply, refreshToken);
-    console.log({ data: { accessToken, user } });
     return reply.status(200).send({ data: { accessToken, user } });
   },
 
