@@ -11,7 +11,7 @@ pagination, filtering, sorting, validation, and Docker support.
 
 - Node.js v24.11.0
 - TypeScript
-- Express
+- Fastify
 - PostgreSQL
 - Prisma ORM
 - JWT (Access + Refresh Tokens)
